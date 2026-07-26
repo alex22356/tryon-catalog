@@ -1,0 +1,38 @@
+{
+  "_comment": "Аффилиат-фиды. Пока enabled=false — включишь, когда получишь ссылку на фид в кабинете AWIN/Rakuten. mapping связывает поля фида с полями приложения: слева наши имена, справа — названия колонок в фиде.",
+  "feeds": [
+    {
+      "name": "M&S Ireland",
+      "enabled": false,
+      "format": "csv",
+      "url": "PUT_YOUR_FEED_URL_HERE",
+      "mapping": {
+        "id": "aw_product_id",
+        "name": "product_name",
+        "price": "search_price",
+        "imageUrl": "merchant_image_url",
+        "productUrl": "aw_deep_link",
+        "category": "category_name",
+        "store": "merchant_name",
+        "inStock": "in_stock"
+      }
+    },
+    {
+      "name": "Пример XML-фида",
+      "enabled": false,
+      "format": "xml",
+      "itemTag": "item",
+      "url": "PUT_YOUR_FEED_URL_HERE",
+      "mapping": {
+        "id": "id",
+        "name": "title",
+        "price": "price",
+        "imageUrl": "image_link",
+        "productUrl": "link",
+        "category": "product_type",
+        "store": "brand",
+        "inStock": "availability"
+      }
+    }
+  ]
+}
