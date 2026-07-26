@@ -1,0 +1,61 @@
+{
+  "version": 1785073796,
+  "updatedAt": "2026-07-26",
+  "items": [
+    {
+      "id": "t_black",
+      "name": "Black Tee",
+      "price": 5.0,
+      "category": "TOP",
+      "imageUrl": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=600&fit=max&fm=jpg",
+      "store": "Dunnes Stores",
+      "inStock": true,
+      "approx": true,
+      "checkedAt": "2026-07-26"
+    },
+    {
+      "id": "s_sneak",
+      "name": "Canvas Sneakers",
+      "price": 10.0,
+      "category": "FOOTWEAR",
+      "imageUrl": "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=600&fit=max&fm=jpg",
+      "store": "Lidl",
+      "inStock": true,
+      "approx": true,
+      "checkedAt": "2026-07-26"
+    },
+    {
+      "id": "j_skinny",
+      "name": "Skinny Jeans",
+      "price": 10.0,
+      "category": "BOTTOM",
+      "imageUrl": "https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?q=80&w=600&fit=max&fm=jpg",
+      "store": "Penneys",
+      "inStock": true,
+      "approx": true,
+      "checkedAt": "2026-07-26"
+    },
+    {
+      "id": "t_sweat",
+      "name": "White Sweatshirt",
+      "price": 20.0,
+      "category": "TOP",
+      "imageUrl": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=600&fit=max&fm=jpg",
+      "store": "Primark",
+      "inStock": true,
+      "approx": true,
+      "checkedAt": "2026-07-26"
+    },
+    {
+      "id": "j_slim",
+      "name": "Slim Jeans",
+      "price": 30.0,
+      "category": "BOTTOM",
+      "imageUrl": "https://images.unsplash.com/photo-1602293589930-45aad59ba3ab?q=80&w=600&fit=max&fm=jpg",
+      "store": "Dunnes Stores",
+      "inStock": true,
+      "approx": true,
+      "checkedAt": "2026-07-26"
+    }
+  ]
+}
