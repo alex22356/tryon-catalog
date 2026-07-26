@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fitting Room — compare clothing prices in Ireland</title>
+<meta name="description" content="Build an outfit on a virtual mannequin, compare prices across Irish high-street stores and see where to buy it.">
+<style>
+  :root{
+    --bg:#17130f; --bg2:#2a231c; --panel:#241e18;
+    --gold:#d9b382; --cream:#f3e9dc; --muted:#a89b8c;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:linear-gradient(180deg,var(--bg),var(--bg2));
+    color:var(--cream); font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  header{padding:56px 0 32px;text-align:center}
+  .logo{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+  h1{font-size:clamp(28px,5vw,44px);margin:14px 0 10px;line-height:1.2}
+  .lead{color:var(--muted);font-size:clamp(16px,2.4vw,19px);max-width:620px;margin:0 auto}
+  .badge{display:inline-block;margin-top:22px;padding:7px 16px;border:1px solid rgba(217,179,130,.5);
+    border-radius:999px;color:var(--gold);font-size:13px}
+  section{padding:40px 0;border-top:1px solid rgba(255,255,255,.07)}
+  h2{font-size:22px;margin:0 0 22px}
+  .steps{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .card{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px}
+  .card .n{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.1em}
+  .card h3{margin:8px 0 8px;font-size:17px}
+  .card p{margin:0;color:var(--muted);font-size:15px}
+  .shots{display:flex;gap:22px;flex-wrap:wrap;justify-content:center}
+  .shot{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:12px;max-width:270px}
+  .shot img{width:100%;border-radius:10px;display:block}
+  .shot span{display:block;text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
+  ul.stores{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:10px}
+  ul.stores li{background:var(--panel);border:1px solid rgba(255,255,255,.07);
+    border-radius:999px;padding:8px 16px;font-size:14px;color:var(--cream)}
+  .note{color:var(--muted);font-size:14px;margin-top:16px}
+  footer{padding:34px 0 60px;color:var(--muted);font-size:13px;text-align:center;
+    border-top:1px solid rgba(255,255,255,.07)}
+  a{color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">Fitting Room</div>
+    <h1>Put the outfit together<br>before you go shopping</h1>
+    <p class="lead">
+      A mobile app for shoppers in Ireland. Build a look on a virtual mannequin,
+      compare what it costs across high-street stores, then head out and buy it.
+    </p>
+    <div class="badge">Android app — in development</div>
+  </header>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="card">
+        <div class="n">01</div>
+        <h3>Set your budget</h3>
+        <p>Move the slider and the catalogue shows only what fits — from €5 basics upwards.</p>
+      </div>
+      <div class="card">
+        <div class="n">02</div>
+        <h3>Dress the mannequin</h3>
+        <p>Pick a top, bottom and shoes. They appear on the mannequin instantly, so you can see the whole look together.</p>
+      </div>
+      <div class="card">
+        <div class="n">03</div>
+        <h3>See where to buy</h3>
+        <p>Every item lists its store and price, with the total for the outfit and a link through to the retailer.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Inside the app</h2>
+    <div class="shots">
+      <figure class="shot" style="margin:0">
+        <img src="screen-fitting.png" alt="Fitting room screen with a dressed mannequin">
+        <span>The fitting room</span>
+      </figure>
+      <figure class="shot" style="margin:0">
+        <img src="screen-wherebuy.png" alt="Where to buy screen listing stores and prices">
+        <span>Where to buy</span>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Stores we cover</h2>
+    <ul class="stores">
+      <li>Dunnes Stores</li>
+      <li>Penneys</li>
+      <li>Lidl</li>
+      <li>Primark</li>
+      <li>M&amp;S Ireland</li>
+    </ul>
+    <p class="note">
+      Prices shown in the app are refreshed daily and each item is stamped with the date it was last checked.
+      Where a price is indicative rather than confirmed, the app marks it clearly so shoppers know to verify in store.
+    </p>
+  </section>
+
+  <section>
+    <h2>What we are</h2>
+    <p class="lead" style="margin:0;max-width:none">
+      Fitting Room is a price comparison and inspiration tool. We do not sell anything ourselves —
+      we help people plan an outfit within a budget and point them to the retailer selling it.
+    </p>
+  </section>
+
+  <footer>
+    Fitting Room · Ireland · <a href="mailto:alexstopinie@gmail.com">alexstopinie@gmail.com</a><br>
+    Product data: <a href="catalog.json">catalog.json</a>
+  </footer>
+
+</div>
+</body>
+</html>

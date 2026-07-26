@@ -18,6 +18,7 @@ import csv
 import io
 import json
 import os
+import shutil
 import sys
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -26,6 +27,7 @@ from datetime import date, timezone, datetime
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(ROOT, "public")
 OUT_FILE = os.path.join(OUT_DIR, "catalog.json")
+SITE_DIR = os.path.join(ROOT, "site")
 
 VALID_CATEGORIES = {"TOP", "BOTTOM", "FULL_BODY", "FOOTWEAR"}
 TODAY = date.today().isoformat()
@@ -161,6 +163,15 @@ def main():
     }
 
     os.makedirs(OUT_DIR, exist_ok=True)
+
+    # Лендинг (site/) публикуется рядом с каталогом
+    if os.path.isdir(SITE_DIR):
+        for name in os.listdir(SITE_DIR):
+            src = os.path.join(SITE_DIR, name)
+            if os.path.isfile(src):
+                shutil.copy2(src, os.path.join(OUT_DIR, name))
+        log(f"лендинг скопирован из site/")
+
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(catalog, f, ensure_ascii=False, indent=2)
 
