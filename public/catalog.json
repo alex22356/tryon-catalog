@@ -1,61 +1,49 @@
 {
-  "version": 1785073796,
-  "updatedAt": "2026-07-26",
+  "version": 4,
+  "updatedAt": "2026-07-28",
   "items": [
     {
-      "id": "t_black",
-      "name": "Black Tee",
-      "price": 5.0,
+      "id": "shein_top_1",
+      "name": "WESTFADE Lace Trim Babydoll Top",
+      "price": 12.49,
       "category": "TOP",
-      "imageUrl": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=600&fit=max&fm=jpg",
-      "store": "Dunnes Stores",
+      "imageUrl": "https://images.unsplash.com/photo-1581044777550-4cfa60707c33?q=80&w=600&fit=max&fm=jpg",
+      "store": "SHEIN",
+      "productUrl": "https://onelink.shein.com/45/5x4po236q8lx",
+      "gender": "female",
+      "fitDx": 0.0,
+      "fitDy": 0.08,
+      "fitScale": 1.25,
       "inStock": true,
-      "approx": true,
-      "checkedAt": "2026-07-26"
+      "checkedAt": "2026-07-28"
     },
     {
-      "id": "s_sneak",
-      "name": "Canvas Sneakers",
-      "price": 10.0,
-      "category": "FOOTWEAR",
-      "imageUrl": "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=600&fit=max&fm=jpg",
-      "store": "Lidl",
-      "inStock": true,
-      "approx": true,
-      "checkedAt": "2026-07-26"
-    },
-    {
-      "id": "j_skinny",
-      "name": "Skinny Jeans",
-      "price": 10.0,
+      "id": "j_blue",
+      "name": "Slim Light Blue Jeans",
+      "price": 18.0,
       "category": "BOTTOM",
-      "imageUrl": "https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?q=80&w=600&fit=max&fm=jpg",
-      "store": "Penneys",
-      "inStock": true,
-      "approx": true,
-      "checkedAt": "2026-07-26"
-    },
-    {
-      "id": "t_sweat",
-      "name": "White Sweatshirt",
-      "price": 20.0,
-      "category": "TOP",
-      "imageUrl": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=600&fit=max&fm=jpg",
+      "imageUrl": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=600&fit=max&fm=jpg",
       "store": "Primark",
+      "gender": "female",
+      "fitDx": 0.0,
+      "fitDy": 0.0,
+      "fitScale": 1.05,
       "inStock": true,
-      "approx": true,
-      "checkedAt": "2026-07-26"
+      "checkedAt": "2026-07-28"
     },
     {
-      "id": "j_slim",
-      "name": "Slim Jeans",
-      "price": 30.0,
-      "category": "BOTTOM",
-      "imageUrl": "https://images.unsplash.com/photo-1602293589930-45aad59ba3ab?q=80&w=600&fit=max&fm=jpg",
-      "store": "Dunnes Stores",
+      "id": "s_white",
+      "name": "Minimal White Sneakers",
+      "price": 12.0,
+      "category": "FOOTWEAR",
+      "imageUrl": "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&fit=max&fm=jpg",
+      "store": "Penneys",
+      "gender": "female",
+      "fitDx": 0.0,
+      "fitDy": 0.0,
+      "fitScale": 0.85,
       "inStock": true,
-      "approx": true,
-      "checkedAt": "2026-07-26"
+      "checkedAt": "2026-07-28"
     }
   ]
 }
