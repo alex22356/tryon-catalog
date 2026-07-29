@@ -37,6 +37,14 @@ jobs:
       - name: Build catalog.json
         run: python scripts/build_catalog.py
 
+      # Картинки AI-примерок (products/) публикуем вместе с каталогом,
+      # чтобы приложение тянуло их по сети, а не из APK.
+      - name: Copy try-on images
+        run: |
+          mkdir -p public/products
+          if [ -d products ]; then cp -r products/. public/products/ ; fi
+          echo "try-on images: $(ls -1 public/products 2>/dev/null | wc -l)"
+
       - name: Show result
         run: |
           echo "--- public/catalog.json ---"

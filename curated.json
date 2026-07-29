@@ -1,5 +1,5 @@
 {
-  "_comment": "ДЕМО-каталог: фото со свободной лицензией (Unsplash, коммерческое использование разрешено). Это не реальные товары магазинов — поэтому store = 'Демо' и approx = true. Реальные позиции появятся, когда одобрят аффилиат-фиды (Decathlon, PrettyLittleThing, JD Sports и др.) — они дают и картинки, и актуальные цены легально.",
+  "_comment": "Ручные и AI-примеренные товары. Товары с preCut/overlayUrl добавляет scripts/publish_remote.py — не правь их вручную.",
   "items": [
     {
       "id": "t_black",
@@ -73,7 +73,6 @@
       "store": "Демо",
       "inStock": true
     },
-
     {
       "id": "b_skinny",
       "name": "Скинни джинсы",
@@ -101,7 +100,6 @@
       "store": "Демо",
       "inStock": true
     },
-
     {
       "id": "d_red",
       "name": "Красное платье",
@@ -120,7 +118,6 @@
       "store": "Демо",
       "inStock": true
     },
-
     {
       "id": "s_canvas",
       "name": "Кеды",
@@ -156,6 +153,23 @@
       "imageUrl": "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=600&fit=max&fm=jpg",
       "store": "Демо",
       "inStock": true
+    },
+    {
+      "id": "shein_5x4po236q8lx",
+      "name": "WESTFADE Lace Trim Tiered Ruffle Short Sleeve White Babydoll Top Summe",
+      "price": 0.0,
+      "category": "TOP",
+      "imageUrl": "https://alex22356.github.io/tryon-catalog/products/thumb_shein_5x4po236q8lx.jpg",
+      "overlayUrl": "https://alex22356.github.io/tryon-catalog/products/overlay_shein_5x4po236q8lx.jpg",
+      "preCut": true,
+      "fitDx": 0.0,
+      "fitDy": 0.0,
+      "fitScale": 1.0,
+      "store": "SHEIN",
+      "gender": "female",
+      "inStock": true,
+      "approx": true,
+      "productUrl": "https://onelink.shein.com/45/5x4po236q8lx"
     }
   ]
 }

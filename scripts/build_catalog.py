@@ -24,6 +24,12 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import date, timezone, datetime
 
+# Windows-консоль по умолчанию cp1252 — принудительно UTF-8, чтобы кириллица не падала.
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(ROOT, "public")
 OUT_FILE = os.path.join(OUT_DIR, "catalog.json")
@@ -74,6 +80,22 @@ def normalise(raw, source, approx):
     url = str(raw.get("productUrl", "")).strip()
     if url:
         item["productUrl"] = url
+
+    # Поля AI-примерки и посадки — переносим как есть, приложение их понимает.
+    overlay = str(raw.get("overlayUrl", "")).strip()
+    if overlay:
+        item["overlayUrl"] = overlay
+    if raw.get("preCut"):
+        item["preCut"] = True
+    gender = str(raw.get("gender", "")).strip()
+    if gender:
+        item["gender"] = gender
+    for key in ("fitDx", "fitDy", "fitScale"):
+        if key in raw:
+            try:
+                item[key] = round(float(raw[key]), 4)
+            except (TypeError, ValueError):
+                pass
     return item
 
 

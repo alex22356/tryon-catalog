@@ -1,0 +1,4 @@
+{
+  "_note": "baseUrl — адрес, где лежит опубликованный каталог. Для GitHub Pages: https://<логин>.github.io/<репозиторий>  (без слэша на конце). После заполнения впиши в local.properties: CATALOG_URL=<baseUrl>/catalog.json",
+  "baseUrl": "https://alex22356.github.io/tryon-catalog"
+}

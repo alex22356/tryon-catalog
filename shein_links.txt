@@ -1,0 +1,24 @@
+# Ссылки SHEIN для каталога. Кидай сюда onelink-ссылки (по одной на строку).
+# Строки с # игнорируются. Скрипт обрабатывает только НОВЫЕ ссылки (уже добавленные пропускает).
+# Запуск:  python scripts/ingest_shein.py
+
+# --- babydoll top (первый товар) ---
+https://onelink.shein.com/45/5x4po236q8lx
+
+# --- партия 1 ---
+https://onelink.shein.com/45/5x52z4scbyny
+https://onelink.shein.com/45/5x530e61x825
+https://onelink.shein.com/45/5x531doly7nf
+https://onelink.shein.com/45/5x5325b1gvhr
+https://onelink.shein.com/45/5x5336sm293f
+https://onelink.shein.com/45/5x534xxlo07x
+https://onelink.shein.com/45/5x5365ca57pa
+https://onelink.shein.com/45/5x537cqz86yh
+https://onelink.shein.com/45/5x539fq4wi99
+https://onelink.shein.com/45/5x53aj6r5lop
+https://onelink.shein.com/45/5x53bqlg1kd1
+https://onelink.shein.com/45/5x53dloi0c9u
+https://onelink.shein.com/45/5x53eh8z9jz5
+https://onelink.shein.com/45/5x53fonoafdz
+https://onelink.shein.com/45/5x53gw2cmpuu
+https://onelink.shein.com/45/5x53hlpr8cl7
