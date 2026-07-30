@@ -331,8 +331,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "GREY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -350,8 +351,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "boho"
+      "color": "NAVY",
+      "style": "boho",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -369,8 +371,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "GREY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -387,8 +390,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "boho"
+      "color": "NAVY",
+      "style": "boho",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -406,8 +410,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "WHITE",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "KIDS"
   },
@@ -424,8 +429,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "BLACK",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -442,8 +448,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "NAVY",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -460,8 +467,9 @@
       "occasion": "PARTY",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "BLACK",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -550,8 +558,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "WHITE",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "KIDS"
   },
@@ -568,8 +577,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "GREY",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -604,8 +614,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "BLACK",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -622,8 +633,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "sporty"
+      "color": "NAVY",
+      "style": "sporty",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -640,8 +652,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "SLIM",
-      "color": "NA",
-      "style": "romantic"
+      "color": "GREY",
+      "style": "romantic",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -658,8 +671,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "BEIGE",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -676,8 +690,9 @@
       "occasion": "PARTY",
       "sleeve": "LONG",
       "fit": "NA",
-      "color": "NA",
-      "style": "casual"
+      "color": "GREEN",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -694,8 +709,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "romantic"
+      "color": "BLACK",
+      "style": "romantic",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -713,8 +729,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "BLACK",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -731,8 +748,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "BLACK",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -749,8 +767,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "GREY",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -767,8 +786,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "WHITE",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -785,8 +805,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "y2k"
+      "color": "NAVY",
+      "style": "y2k",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -822,8 +843,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "BLACK",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -858,8 +880,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "BURGUNDY",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -876,8 +899,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "boho"
+      "color": "BEIGE",
+      "style": "boho",
+      "colorFrom": "photo"
     },
     "gender": "KIDS"
   },
@@ -913,8 +937,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "romantic"
+      "color": "WHITE",
+      "style": "romantic",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -931,8 +956,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "NA",
-      "color": "NA",
-      "style": "minimal"
+      "color": "BLACK",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -968,8 +994,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "NAVY",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -986,8 +1013,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "boho"
+      "color": "BEIGE",
+      "style": "boho",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1023,8 +1051,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "western"
+      "color": "BEIGE",
+      "style": "western",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1041,8 +1070,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "y2k"
+      "color": "WHITE",
+      "style": "y2k",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1059,8 +1089,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "WHITE",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1077,8 +1108,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "vintage"
+      "color": "GREY",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1095,8 +1127,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "casual"
+      "color": "RED",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1113,8 +1146,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "y2k"
+      "color": "CREAM",
+      "style": "y2k",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1149,8 +1183,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "NAVY",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1204,8 +1239,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "GREY",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1296,8 +1332,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "GREEN",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1314,8 +1351,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "GREY",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1332,8 +1370,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "GREY",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -1350,8 +1389,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "WHITE",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1368,8 +1408,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "NAVY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1422,8 +1463,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "GREY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -1440,8 +1482,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "casual"
+      "color": "WHITE",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1458,8 +1501,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "casual"
+      "color": "BEIGE",
+      "style": "casual",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1494,8 +1538,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "WHITE",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1512,8 +1557,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "vintage"
+      "color": "BEIGE",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1530,8 +1576,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "SLIM",
-      "color": "NA",
-      "style": "minimal"
+      "color": "RED",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1548,8 +1595,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "WHITE",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1585,8 +1633,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "GREY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -1640,8 +1689,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "NAVY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -1658,8 +1708,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "GREY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1676,8 +1727,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "boho"
+      "color": "BEIGE",
+      "style": "boho",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1695,8 +1747,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "NAVY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1713,8 +1766,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "GREY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1768,8 +1822,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "PINK",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1786,8 +1841,9 @@
       "occasion": "CASUAL",
       "sleeve": "SHORT",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "BLACK",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -1822,8 +1878,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "BEIGE",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -1841,8 +1898,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "y2k"
+      "color": "WHITE",
+      "style": "y2k",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1859,8 +1917,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "BEIGE",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -1896,8 +1955,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "WHITE",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1914,8 +1974,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "WHITE",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -1932,8 +1993,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "NA",
-      "color": "NA",
-      "style": "vintage"
+      "color": "NAVY",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -1968,7 +2030,7 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "GRAY",
+      "color": "GREY",
       "style": "vintage"
     },
     "gender": "FEMALE"
@@ -1986,8 +2048,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "WHITE",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -2004,8 +2067,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "BLACK",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2040,8 +2104,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "vintage"
+      "color": "NAVY",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2077,8 +2142,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "GREY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2115,8 +2181,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "romantic"
+      "color": "BEIGE",
+      "style": "romantic",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2170,8 +2237,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "BEIGE",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -2188,8 +2256,9 @@
       "occasion": "CASUAL",
       "sleeve": "SHORT",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "boho"
+      "color": "WHITE",
+      "style": "boho",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2242,8 +2311,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "boho"
+      "color": "WHITE",
+      "style": "boho",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2260,8 +2330,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "WHITE",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2279,8 +2350,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "boho"
+      "color": "BLUE",
+      "style": "boho",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2315,8 +2387,9 @@
       "occasion": "PARTY",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "y2k"
+      "color": "PINK",
+      "style": "y2k",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -2334,8 +2407,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "romantic"
+      "color": "BLACK",
+      "style": "romantic",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2352,8 +2426,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "minimal"
+      "color": "GREY",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2370,8 +2445,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "LOOSE",
-      "color": "NA",
-      "style": "vintage"
+      "color": "BROWN",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2388,8 +2464,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "BLACK",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -2406,8 +2483,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "romantic"
+      "color": "CREAM",
+      "style": "romantic",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2424,8 +2502,9 @@
       "occasion": "CASUAL",
       "sleeve": "SLEEVELESS",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "street"
+      "color": "WHITE",
+      "style": "street",
+      "colorFrom": "photo"
     },
     "gender": "MALE"
   },
@@ -2442,8 +2521,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "GREY",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -2478,7 +2558,7 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "GRAY",
+      "color": "GREY",
       "style": "minimal"
     },
     "gender": "FEMALE"
@@ -2496,8 +2576,9 @@
       "occasion": "CASUAL",
       "sleeve": "LONG",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "WHITE",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2514,8 +2595,9 @@
       "occasion": "CASUAL",
       "sleeve": "SHORT",
       "fit": "NA",
-      "color": "NA",
-      "style": "minimal"
+      "color": "WHITE",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "FEMALE"
   },
@@ -2533,8 +2615,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "vintage"
+      "color": "YELLOW",
+      "style": "vintage",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -2552,8 +2635,9 @@
       "occasion": "CASUAL",
       "sleeve": "NA",
       "fit": "NA",
-      "color": "NA",
-      "style": "minimal"
+      "color": "CREAM",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },
@@ -2571,8 +2655,9 @@
       "occasion": "CASUAL",
       "sleeve": "SHORT",
       "fit": "REGULAR",
-      "color": "NA",
-      "style": "minimal"
+      "color": "BROWN",
+      "style": "minimal",
+      "colorFrom": "photo"
     },
     "gender": "UNISEX"
   },

@@ -69,6 +69,7 @@ fit: SLIM | REGULAR | LOOSE | NA
 Title: %s
 JSON:"""
 
+COLOR_ALIAS = {"GRAY": "GREY", "IVORY": "CREAM"}   # синонимы сводим к одному
 COLORS = {"WHITE", "BLACK", "GREY", "GRAY", "BEIGE", "BROWN", "RED", "PINK", "ORANGE",
           "YELLOW", "GREEN", "BLUE", "NAVY", "PURPLE", "GOLD", "SILVER", "MULTI",
           "CREAM", "IVORY", "KHAKI", "BURGUNDY", "TEAL", "MINT", "LILAC", "APRICOT"}
@@ -107,6 +108,7 @@ def parse_attrs(raw, name=""):
 
     # цвет — только настоящий цвет, иначе NA (модель любит писать SOLID/PRINT)
     c = str(d.get("color", "")).strip().upper()
+    c = COLOR_ALIAS.get(c, c)
     out["color"] = c if c in COLORS else "NA"
 
     # стиль — цифры оставляем, иначе y2k превращается в yk
@@ -158,7 +160,7 @@ def color_from_photo(pid):
     raw = json.load(urllib.request.urlopen(req, timeout=300))["response"].upper()
     for c in COLORS:
         if c in raw:
-            return c
+            return COLOR_ALIAS.get(c, c)
     return None
 
 
