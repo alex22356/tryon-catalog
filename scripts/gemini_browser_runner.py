@@ -24,6 +24,7 @@ Gemini-примерка через ТВОЙ браузер (Google AI Studio, б
 
 import os
 import sys
+import json
 import time
 import glob
 
@@ -46,6 +47,19 @@ PROFILE_DIR = os.path.join(HERE, ".chrome_profile")     # отдельный п�
 # Твой настоящий профиль Chrome. Если он уже залогинен в Google, входить не нужно —
 # значит блокировка «Couldn't sign you in» не сработает.
 REAL_PROFILE = os.path.join(os.environ.get("LOCALAPPDATA", ""), "Google", "Chrome", "User Data")
+
+def _find_chrome():
+    for base in (os.environ.get("PROGRAMFILES", ""), os.environ.get("PROGRAMFILES(X86)", ""),
+                 os.environ.get("LOCALAPPDATA", "")):
+        if not base:
+            continue
+        cand = os.path.join(base, "Google", "Chrome", "Application", "chrome.exe")
+        if os.path.exists(cand):
+            return cand
+    return r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+
+CHROME_EXE = _find_chrome()
 
 
 def chrome_is_running():
@@ -275,6 +289,38 @@ class RateLimit(Exception):
     pass
 
 
+def run_queue(page, todo, names):
+    """Прогон очереди с понятным выводом по каждой вещи."""
+    done = 0
+    for n, (pid, gpath, cat) in enumerate(todo, 1):
+        out = os.path.join(OUT_DIR, pid + ".png")
+        title = names.get(pid, {}).get("name", "")[:44]
+        log("")
+        log(f"[{n}/{len(todo)}] {cat}  {title}")
+        for attempt in range(1, MAX_RETRIES_ITEM + 1):
+            try:
+                if attempt > 1:
+                    log(f"    попытка {attempt}")
+                run_one(page, MODEL_IMAGE, gpath, out, PROMPTS.get(cat, PROMPT))
+                done += 1
+                log(f"    ✓ готово ({done} из {len(todo)}) -> tryon_out/{pid}.png")
+                break
+            except RateLimit:
+                log(f"    ⏳ упёрлись в лимит Gemini. Жду {RATELIMIT_BACKOFF//60} мин и продолжу…")
+                time.sleep(RATELIMIT_BACKOFF)
+            except (PWTimeout, RuntimeError) as e:
+                log(f"    ошибка: {str(e)[:90]}")
+                if attempt == MAX_RETRIES_ITEM:
+                    log("    пропускаю эту вещь")
+                else:
+                    page.wait_for_timeout(3000)
+        time.sleep(PER_ITEM_PAUSE)
+    log("")
+    log(f"ИТОГ: сделано {done} из {len(todo)}. Папка: {OUT_DIR}")
+    if done:
+        log("Дальше: пункт 2 (опубликует в приложение) или пункт 4 (выложит клиентам)")
+
+
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     if not os.path.exists(MODEL_IMAGE):
@@ -325,6 +371,40 @@ def main():
         log("Вход в Google не потребуется — сессия уже есть в профиле.")
 
     with sync_playwright() as p:
+        # ── РЕЖИМ ПОДКЛЮЧЕНИЯ: Chrome ты запускаешь сам, скрипт подключается ──
+        # Так нет конфликта профиля (Chrome-синглтон) и не нужен вход в Google.
+        if "--attach" in sys.argv:
+            import urllib.request as _u
+            try:
+                info = json.loads(_u.urlopen("http://127.0.0.1:9222/json/version",
+                                             timeout=5).read().decode())
+                log("нашёл твой Chrome: %s" % info.get("Browser", "?"))
+            except Exception:
+                log("")
+                log("Chrome с отладочным портом не найден на 127.0.0.1:9222")
+                log("Запусти его так (Chrome должен быть ПОЛНОСТЬЮ закрыт):")
+                log("")
+                log('  "%s" --remote-debugging-port=9222' % CHROME_EXE)
+                log("")
+                log("Проще: двойной клик по файлу  tools\\chrome_debug.bat")
+                log("Потом войди/проверь, что ты в аккаунте, и запусти этот пункт снова.")
+                return
+            browser = p.chromium.connect_over_cdp("http://127.0.0.1:9222")
+            ctx = browser.contexts[0] if browser.contexts else browser.new_context()
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            log("подключился. Вкладок: %d" % len(ctx.pages))
+            log("открываю AI Studio…")
+            try:
+                with Heartbeat("загружаю AI Studio", every=5, warn_after=30):
+                    page.goto(AISTUDIO_URL, wait_until="domcontentloaded", timeout=60000)
+            except Exception as e:
+                log("не смог открыть страницу: %s" % str(e)[:90])
+            log("страница: %s" % page.url[:70])
+            input("\n>>> Проверь, что AI Studio под твоим аккаунтом, выбери модель "
+                  "'Gemini 2.5 Flash Image' и нажми Enter здесь...\n")
+            run_queue(page, todo, names)
+            return
+
         log("запускаю Chrome…")
         hint = ("Chrome открылся, но подключиться к профилю не удаётся. "
                 "Проверь: не осталось ли процессов chrome.exe (Диспетчер задач), "
@@ -365,28 +445,7 @@ def main():
             input("\n>>> Войди в Google, открой AI Studio, выбери модель "
                   "'Gemini 2.5 Flash Image'. Потом нажми Enter здесь...\n")
 
-        done = 0
-        for pid, gpath, cat in todo:
-            out = os.path.join(OUT_DIR, pid + ".png")
-            for attempt in range(1, MAX_RETRIES_ITEM + 1):
-                try:
-                    log(f"[{pid}] [{cat}] попытка {attempt}…")
-                    run_one(page, MODEL_IMAGE, gpath, out, PROMPTS.get(cat, PROMPT))
-                    done += 1
-                    log(f"[{pid}] ✓ сохранено -> {out}  ({done}/{len(todo)})")
-                    break
-                except RateLimit:
-                    log(f"[{pid}] ⏳ лимит. Жду {RATELIMIT_BACKOFF//60} мин и продолжу…")
-                    time.sleep(RATELIMIT_BACKOFF)
-                except (PWTimeout, RuntimeError) as e:
-                    log(f"[{pid}] ошибка: {e}")
-                    if attempt == MAX_RETRIES_ITEM:
-                        log(f"[{pid}] пропускаю после {attempt} попыток")
-                    else:
-                        page.wait_for_timeout(3000)
-            time.sleep(PER_ITEM_PAUSE)
-
-        log(f"Готово. Сделано за сессию: {done}. Результаты: {OUT_DIR}")
+        run_queue(page, todo, names)
         ctx.close()
 
 

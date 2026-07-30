@@ -189,18 +189,33 @@ def act_update():
 
 def act_tryon():
     head("3 · Примерка (Gemini)")
-    print("Google блокирует ВХОД из автоматизированного браузера.")
-    print("Обход: работать на твоём профиле Chrome, где ты уже вошёл.")
+    print("Google блокирует вход из автоматизированного браузера, а взять")
+    print("занятый профиль Chrome нельзя. Рабочий путь: ты сам запускаешь")
+    print("свой Chrome с отладочным портом, а скрипт к нему подключается.")
     print()
-    print("  1 — мой профиль Chrome (нужно закрыть Chrome)   ← пробуем это")
-    print("  2 — отдельный профиль (потребует входа, скорее всего заблокируют)")
-    choice = input("Как запускать? [1/2, Enter=1]: ").strip()
+    print("  1 — подключиться к моему Chrome (порт 9222)   ← рабочий вариант")
+    print("  2 — запустить Chrome самому на моём профиле   (виснет, не советую)")
+    print("  3 — отдельный профиль                        (заблокируют вход)")
+    choice = input("Как запускать? [1/2/3, Enter=1]: ").strip()
+
     if choice == "2":
-        run("gemini_browser_runner.py")
-    else:
         print("\nЗАКРОЙ Chrome полностью, потом нажми Enter.")
         input("[Enter] когда закрыл ")
         run("gemini_browser_runner.py", "--real-profile")
+    elif choice == "3":
+        run("gemini_browser_runner.py")
+    else:
+        bat = os.path.join(HERE, "tools", "chrome_debug.bat")
+        print("\nСейчас открою запускатель Chrome с портом 9222.")
+        print("Он закроет твои окна Chrome и откроет AI Studio.")
+        print("Там: проверь аккаунт, выбери модель Gemini 2.5 Flash Image.")
+        input("\n[Enter] чтобы запустить Chrome ")
+        if os.path.exists(bat):
+            subprocess.Popen(["cmd", "/c", "start", "", bat], shell=False)
+        else:
+            print("не нашёл", bat)
+        input("\n[Enter] когда Chrome открылся и модель выбрана ")
+        run("gemini_browser_runner.py", "--attach")
 
 
 def act_deploy():
