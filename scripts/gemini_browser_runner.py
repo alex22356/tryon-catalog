@@ -284,13 +284,24 @@ def main():
         log("Вход в Google не потребуется — сессия уже есть в профиле.")
 
     with sync_playwright() as p:
+        log("запускаю Chrome…")
         ctx = p.chromium.launch_persistent_context(
             profile, channel="chrome", headless=False,
             args=["--start-maximized"], no_viewport=True,
         )
+        log("Chrome запущен, вкладок: %d" % len(ctx.pages))
         page = ctx.pages[0] if ctx.pages else ctx.new_page()
 
-        page.goto(AISTUDIO_URL, wait_until="domcontentloaded")
+        log("открываю AI Studio: %s" % AISTUDIO_URL)
+        try:
+            page.goto(AISTUDIO_URL, wait_until="domcontentloaded", timeout=60000)
+        except Exception as e:
+            log("не смог открыть страницу: %s" % str(e)[:90])
+        log("страница: %s" % page.url[:70])
+        try:
+            log("заголовок: %s" % page.title()[:60])
+        except Exception:
+            pass
         if use_real:
             input("\n>>> Проверь: AI Studio открылся уже под твоим аккаунтом? "
                   "Выбери модель 'Gemini 2.5 Flash Image' и нажми Enter здесь...\n")

@@ -1,10 +1,4 @@
-# Ссылки SHEIN для каталога. Кидай сюда onelink-ссылки (по одной на строку).
-# Строки с # игнорируются. Скрипт обрабатывает только НОВЫЕ ссылки (уже добавленные пропускает).
-# Запуск:  python scripts/ingest_shein.pyUS|https://onelink.shein.com/45/5xbvlpdf2pho
-US|https://onelink.shein.com/45/5xbvm17mct2d
-US|https://onelink.shein.com/45/5xbvmqv0tiqq
-US|https://onelink.shein.com/45/5xbvnoejqgf3
-US|https://onelink.shein.com/45/5xbvonx35o4v
-
-# --- добавлено 2026-07-30 13:35 ---
-https://onelink.shein.com/45/5xbvonx35o4v
+# Ссылки SHEIN. Заполняется автоматически:
+#   пункт 1 меню — кабинет SHEIN, ловит кнопку «Earn» (с ценами)
+#   пункт 5 меню — закладка, собирает пачкой с категории
+# Формат: US|https://...   или   EU|https://...
