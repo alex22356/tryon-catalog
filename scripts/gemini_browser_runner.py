@@ -112,14 +112,40 @@ def categories():
             for p in json.load(open(path, encoding="utf-8"))}
 
 
-def garments_queue():
-    files = sorted(glob.glob(os.path.join(GARMENTS_DIR, "*.jpg")))
+def products():
+    """Товары в порядке добавления (последние — в конце)."""
+    path = os.path.join(HERE, "shein_products.json")
+    if not os.path.exists(path):
+        return []
+    import json
+    return json.load(open(path, encoding="utf-8"))
+
+
+def garments_queue(only_picked=True, limit=0):
+    """
+    Очередь на примерку.
+
+    only_picked=True (по умолчанию) — ТОЛЬКО товары, которые ты выбрал сам
+    кнопкой «Earn» (у них есть цена). Массовый сбор закладкой — не берём:
+    он собирался для наполнения, а не для примерки.
+    only_picked=False (--all) — все подряд.
+    """
     cats = categories()
     todo = []
-    for f in files:
-        pid = os.path.splitext(os.path.basename(f))[0]
-        if not os.path.exists(os.path.join(OUT_DIR, pid + ".png")):
-            todo.append((pid, f, cats.get(pid, "TOP")))
+    for p in reversed(products()):                 # новые первыми
+        pid = p["id"]
+        if p.get("category") in (None, "OTHER"):   # не-одежда
+            continue
+        if only_picked and not p.get("price"):     # не выбирался вручную
+            continue
+        gpath = os.path.join(GARMENTS_DIR, pid + ".jpg")
+        if not os.path.exists(gpath):
+            continue
+        if os.path.exists(os.path.join(OUT_DIR, pid + ".png")):
+            continue                               # уже примерено
+        todo.append((pid, gpath, cats.get(pid, "TOP")))
+        if limit and len(todo) >= limit:
+            break
     return todo
 
 
@@ -133,6 +159,7 @@ def page_has_ratelimit(page):
 
 def run_one(page, model_img, garment_img, out_path, prompt=PROMPT):
     """Один прогон: приложить 2 фото, вставить промт, запустить, забрать картинку."""
+    log("    · открываю чистый чат AI Studio")
     page.goto(AISTUDIO_URL, wait_until="domcontentloaded")
     page.wait_for_timeout(2500)
 
@@ -147,6 +174,7 @@ def run_one(page, model_img, garment_img, out_path, prompt=PROMPT):
                 btn.first.click()
                 page.wait_for_timeout(800)
                 break
+    log("    · прикладываю 2 фото (модель + вещь)")
     page.locator('input[type="file"]').first.set_input_files([model_img, garment_img])
     page.wait_for_timeout(3500)  # дать превью подгрузиться
 
@@ -159,17 +187,22 @@ def run_one(page, model_img, garment_img, out_path, prompt=PROMPT):
             break
     if box is None:
         raise RuntimeError("не нашёл поле ввода промта [ТЮНИНГ]")
+    log("    · вставляю промт (%d симв.)" % len(prompt))
     box.click()
     box.fill(prompt)
     page.wait_for_timeout(500)
 
     # 3) запустить — в AI Studio это Ctrl+Enter
+    log("    · запускаю генерацию (Ctrl+Enter)")
     page.keyboard.press("Control+Enter")
 
     # 4) ждать сгенерённую картинку в ответе
     deadline = time.time() + RESULT_TIMEOUT
     result_img = None
+    waited = 0
     while time.time() < deadline:
+        if waited and waited % 15 == 0:
+            log("    · жду картинку… %ds" % waited)
         if page_has_ratelimit(page):
             raise RateLimit()
         # берём последнюю картинку-ответ (blob/data), не превью-инпуты
@@ -185,10 +218,12 @@ def run_one(page, model_img, garment_img, out_path, prompt=PROMPT):
             except Exception:
                 pass
         page.wait_for_timeout(1500)
+        waited += 1.5
 
     if result_img is None:
         raise RuntimeError("картинка не появилась за отведённое время")
 
+    log("    · картинка получена, сохраняю")
     result_img.scroll_into_view_if_needed()
     page.wait_for_timeout(800)
     result_img.screenshot(path=out_path)   # чистый PNG самой картинки, без UI
@@ -203,10 +238,33 @@ def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     if not os.path.exists(MODEL_IMAGE):
         log("НЕ найдена модель:", MODEL_IMAGE); return
-    todo = garments_queue()
-    log(f"В очереди: {len(todo)} вещей. Готовые пропускаю.")
+
+    take_all = "--all" in sys.argv
+    limit = 0
+    for i, a in enumerate(sys.argv):
+        if a == "--limit" and i + 1 < len(sys.argv):
+            limit = int(sys.argv[i + 1])
+
+    todo = garments_queue(only_picked=not take_all, limit=limit)
+    names = {p["id"]: p for p in products()}
+
+    if take_all:
+        log(f"Режим: ВСЕ товары. В очереди: {len(todo)}")
+    else:
+        log(f"Режим: только выбранные тобой (кнопкой «Earn»). В очереди: {len(todo)}")
+        log("       массовый сбор закладкой не берём — он был для наполнения")
     if not todo:
-        log("Всё уже сделано."); return
+        log("Нечего примерять. Если нужны и старые — запусти с --all"); return
+
+    log("")
+    log("Что будет примерено (новые первыми):")
+    for i, (pid, _, cat) in enumerate(todo[:12], 1):
+        p = names.get(pid, {})
+        price = f"{p.get('price')} {p.get('currency','')}" if p.get("price") else "-"
+        log(f"  {i:2}. [{cat:9}] {price:11} {p.get('name','')[:44]}")
+    if len(todo) > 12:
+        log(f"  … и ещё {len(todo) - 12}")
+    log("")
 
     # Какой профиль Chrome использовать
     use_real = "--real-profile" in sys.argv

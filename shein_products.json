@@ -2604,7 +2604,7 @@
   {
     "id": "shein_501733803",
     "name": "Peanut Stress Ball, Crunchy Squeeze Ball, Soft Mochi Toy, Buttery Soft Touch, St",
-    "category": "ACCESSORY",
+    "category": "OTHER",
     "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2026/06/25/5a/178237676084b664377d7a03b464ac8a9b68b39716_thumbnail_900x.avif",
     "productUrl": "https://us.shein.com/Peanut-Stress-Ball-Crunchy-Squeeze-Ball-Soft-Mochi-Toy-Buttery-Soft-Touch-Stress-Relief-Toy-ASMR-Sensory-Fidget-Toy-Suitable-For-Adults-Birthday-Gift-Holiday-Gift-Perfect-Gift-p-501733803.html",
     "store": "SHEIN",
@@ -2619,7 +2619,8 @@
       "style": "vintage",
       "colorFrom": "photo"
     },
-    "gender": "UNISEX"
+    "gender": "UNISEX",
+    "excluded": "not wearable"
   },
   {
     "id": "shein_430264821",
@@ -2683,7 +2684,7 @@
   {
     "id": "shein_478181566",
     "name": "Non‑Rebound Slow Rising Caramel Pudding Stress Ball, Soft Crispy Bead Filled Sti",
-    "category": "ACCESSORY",
+    "category": "OTHER",
     "garmentRef": "https://img.ltwebstatic.com/v4/p/spmp/2026/06/07/06/1780803153cbc27cbb515a70b83b1e300f13a10c2a_squfix_thumbnail_900x.png",
     "productUrl": "https://onelink.shein.com/45/5xbunvzckuqd",
     "productUrlByRegion": {
@@ -2699,7 +2700,8 @@
     "approx": false,
     "discount": 47,
     "sold": 600,
-    "aiCategory": "ACCESSORY"
+    "aiCategory": "ACCESSORY",
+    "excluded": "not wearable"
   },
   {
     "id": "shein_410700090",
