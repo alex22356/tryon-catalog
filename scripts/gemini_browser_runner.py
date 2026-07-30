@@ -45,15 +45,33 @@ PROFILE_DIR = os.path.join(HERE, ".chrome_profile")     # отдельный п�
 
 AISTUDIO_URL = "https://aistudio.google.com/prompts/new_chat"
 
-PROMPT = (
-    "Dress the woman in the FIRST image with the garment from the SECOND image. "
+_KEEP = (
     "CRITICAL: keep the woman's body, pose, proportions, position, hands, the camera angle, "
     "the framing, the image dimensions and the plain white background PIXEL-IDENTICAL to the first image. "
-    "Change NOTHING except adding the garment onto her body. "
-    "The garment must sit naturally with realistic folds, draping and soft shadows, truly worn. "
-    "Preserve the garment's exact colors and all details (lace, ruffles, hems, prints). "
-    "Opaque fabric. Photorealistic. Output the full body on the same white background."
+    "Preserve the item's exact colors and all details. Photorealistic. "
+    "Output the full body on the same white background."
 )
+
+# Промт зависит от категории: обувь надевается на ноги, а не на торс.
+PROMPTS = {
+    "TOP": "Dress the woman in the FIRST image with the top from the SECOND image. "
+           "Change NOTHING except adding this top onto her upper body. It must sit naturally "
+           "with realistic folds, draping and soft shadows, truly worn. Opaque fabric. " + _KEEP,
+    "BOTTOM": "Dress the woman in the FIRST image with the trousers/skirt from the SECOND image. "
+              "Change NOTHING except adding this garment onto her lower body, correctly at the waist, "
+              "with realistic folds and soft shadows. " + _KEEP,
+    "FULL_BODY": "Dress the woman in the FIRST image with the dress/outfit from the SECOND image. "
+                 "Change NOTHING except adding this garment onto her body, with realistic drape "
+                 "and soft shadows. " + _KEEP,
+    "FOOTWEAR": "Put the shoes from the SECOND image onto the feet of the woman in the FIRST image. "
+                "Change NOTHING except replacing her footwear: both shoes correctly on her feet, "
+                "correct scale and perspective, contacting the ground with a soft contact shadow. "
+                "Do not alter her legs, clothing or pose. " + _KEEP,
+    "ACCESSORY": "Add the accessory from the SECOND image onto the woman in the FIRST image, "
+                 "worn in its natural place (bag in hand or on shoulder, jewellery on neck/wrist, "
+                 "hat on head), at correct scale with a soft shadow. Change nothing else. " + _KEEP,
+}
+PROMPT = PROMPTS["TOP"]   # запасной вариант, если категория неизвестна
 
 # тайминги (сек)
 PER_ITEM_PAUSE = 8          # пауза между вещами (щадим лимит)
@@ -70,13 +88,24 @@ def log(*a):
     print(time.strftime("%H:%M:%S"), *a, flush=True)
 
 
+def categories():
+    """id → категория (из shein_products.json), чтобы выбрать правильный промт."""
+    path = os.path.join(HERE, "shein_products.json")
+    if not os.path.exists(path):
+        return {}
+    import json
+    return {p["id"]: p.get("category", "TOP")
+            for p in json.load(open(path, encoding="utf-8"))}
+
+
 def garments_queue():
     files = sorted(glob.glob(os.path.join(GARMENTS_DIR, "*.jpg")))
+    cats = categories()
     todo = []
     for f in files:
         pid = os.path.splitext(os.path.basename(f))[0]
         if not os.path.exists(os.path.join(OUT_DIR, pid + ".png")):
-            todo.append((pid, f))
+            todo.append((pid, f, cats.get(pid, "TOP")))
     return todo
 
 
@@ -88,7 +117,7 @@ def page_has_ratelimit(page):
     return any(m in body for m in RATE_MARKERS)
 
 
-def run_one(page, model_img, garment_img, out_path):
+def run_one(page, model_img, garment_img, out_path, prompt=PROMPT):
     """Один прогон: приложить 2 фото, вставить промт, запустить, забрать картинку."""
     page.goto(AISTUDIO_URL, wait_until="domcontentloaded")
     page.wait_for_timeout(2500)
@@ -117,7 +146,7 @@ def run_one(page, model_img, garment_img, out_path):
     if box is None:
         raise RuntimeError("не нашёл поле ввода промта [ТЮНИНГ]")
     box.click()
-    box.fill(PROMPT)
+    box.fill(prompt)
     page.wait_for_timeout(500)
 
     # 3) запустить — в AI Studio это Ctrl+Enter
@@ -178,12 +207,12 @@ def main():
               "Потом нажми Enter здесь...\n")
 
         done = 0
-        for pid, gpath in todo:
+        for pid, gpath, cat in todo:
             out = os.path.join(OUT_DIR, pid + ".png")
             for attempt in range(1, MAX_RETRIES_ITEM + 1):
                 try:
-                    log(f"[{pid}] попытка {attempt}…")
-                    run_one(page, MODEL_IMAGE, gpath, out)
+                    log(f"[{pid}] [{cat}] попытка {attempt}…")
+                    run_one(page, MODEL_IMAGE, gpath, out, PROMPTS.get(cat, PROMPT))
                     done += 1
                     log(f"[{pid}] ✓ сохранено -> {out}  ({done}/{len(todo)})")
                     break

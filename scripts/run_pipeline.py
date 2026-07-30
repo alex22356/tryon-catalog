@@ -136,12 +136,12 @@ def report():
     for p in products:
         c = p.get("category", "?")
         by_cat[c] = by_cat.get(c, 0) + 1
-        if p["id"] not in done and c != "FOOTWEAR":
+        if p["id"] not in done:
             pending.append(p)
 
     print(f"товаров собрано: {len(products)}   {by_cat}")
     print(f"примерок готово: {len(done)}")
-    print(f"ждут примерки:   {len(pending)}  (обувь не примеряется — VTON её не надевает)")
+    print(f"ждут примерки:   {len(pending)}  (Gemini одевает и обувь, и аксессуары)")
     no_price = [p for p in products if not p.get("price")]
     if no_price:
         print(f"без цены:        {len(no_price)}  ← заполнятся из фида Awin")

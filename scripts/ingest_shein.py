@@ -21,6 +21,7 @@ import re
 import sys
 import html
 import time
+import urllib.parse
 import requests
 
 # Windows-консоль по умолчанию cp1252 — принудительно UTF-8, чтобы кириллица в выводе не падала.
@@ -72,14 +73,48 @@ def bigger(url: str) -> str:
     return re.sub(r"_thumbnail_\d+x\d*", "_thumbnail_900x", url)
 
 
+# Маркетинговые заголовки, которые onelink иногда отдаёт вместо названия товара
+GENERIC_TITLE = ("snag these", "must-haves", "shop online", "women's & men's",
+                 "free shipping", "% off", "shein before")
+
+
+def name_from_slug(url: str) -> str:
+    """Название из адреса товара: .../Women-s-Round-Neck-...-p-135097572.html"""
+    m = re.search(r"/([^/]+?)-p-\d+", url)
+    if not m:
+        return ""
+    s = m.group(1)
+    for _ in range(2):                      # адрес бывает двойного кодирования
+        s = urllib.parse.unquote(s)
+    s = s.replace("-", " ").replace("  ", " ").strip()
+    s = re.sub(r"\bWomen s\b", "Women's", s)
+    return s[:80]
+
+
 def fetch(url: str):
+    """Возвращает (name, image, goods_id) — goods_id может быть None."""
     r = requests.get(url, headers=UA, timeout=25)
     t = r.text
     title = re.search(r'og:title" content="([^"]*)"', t)
     img = re.search(r'og:image" content="([^"]*)"', t)
     if not (title and img):
         return None
-    return clean(title.group(1)), img.group(1)
+
+    name = clean(title.group(1))
+    gid = None
+    # onelink прячет внутри и id товара, и его настоящий адрес
+    m = re.search(r"-p-(\d+)", t)
+    if m:
+        gid = m.group(1)
+
+    # заголовок маркетинговый → берём название из адреса товара
+    if any(k in name.lower() for k in GENERIC_TITLE):
+        target = re.search(r"https://[a-z]{2}\.shein\.com/[^\"'\\ ]*?-p-\d+", t)
+        slug_name = name_from_slug(target.group(0)) if target else ""
+        if slug_name:
+            name = clean(slug_name)
+
+    return name, img.group(1), gid
 
 
 def read_links():
@@ -152,8 +187,12 @@ def main():
             products[p["id"]] = p
 
     links = read_links()
-    added = 0
+    added = upgraded = 0
+    done_urls = {p.get("productUrl") for p in products.values()}
     for url in links:
+        if url in done_urls:
+            continue
+        # для onelink настоящий id узнаём только со страницы, поэтому сначала пробный ключ
         pid = "shein_" + code_of(url)
         if pid in products:
             continue
@@ -162,7 +201,20 @@ def main():
             if not got:
                 print("SKIP (нет og-тегов):", url)
                 continue
-            name, img = got
+            name, img, gid = got
+            # goods_id — единый ключ: так onelink склеивается с товаром, собранным закладкой
+            if gid:
+                pid = "shein_" + gid
+
+            # Товар уже есть (собран закладкой) → это апгрейд до партнёрской ссылки
+            if pid in products:
+                if "onelink.shein.com" in url:
+                    products[pid]["productUrl"] = url
+                    upgraded += 1
+                    print(f"↑ {pid}  партнёрская ссылка  {products[pid]['name'][:38]}")
+                    done_urls.add(url)
+                continue
+
             img = bigger(img)
             cat = categorize(name)
             # качаем референс вещи
@@ -178,6 +230,7 @@ def main():
                 "store": "SHEIN",
                 # imageUrl / overlayUrl проставятся после этапа 2 (примерка)
             }
+            done_urls.add(url)
             added += 1
             print(f"+ {pid}  [{cat}]  {name[:50]}")
             time.sleep(0.3)
@@ -189,7 +242,10 @@ def main():
     by_cat = {}
     for p in items:
         by_cat[p["category"]] = by_cat.get(p["category"], 0) + 1
-    print(f"\nГотово. Новых: {added}. Всего: {len(items)}. По категориям: {by_cat}")
+    aff = sum(1 for p in items if "onelink.shein.com" in (p.get("productUrl") or ""))
+    print(f"\nГотово. Новых: {added}. Партнёрских ссылок добавлено: {upgraded}.")
+    print(f"Всего: {len(items)}   партнёрских: {aff}   обычных: {len(items) - aff}")
+    print(f"По категориям: {by_cat}")
     print(f"JSON: {OUT_JSON}\nФото вещей: {GARMENTS}")
 
 
