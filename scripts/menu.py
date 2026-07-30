@@ -46,7 +46,15 @@ AFFILIATE = {
 
 
 def run(script, *args):
-    return subprocess.run([sys.executable, os.path.join(SCRIPTS, script), *args], cwd=HERE)
+    """
+    Запуск шага. Ctrl+C останавливает ТОЛЬКО шаг и возвращает в меню:
+    в Windows-консоли Ctrl+C летит всей группе процессов, поэтому здесь его глотаем.
+    """
+    try:
+        return subprocess.run([sys.executable, os.path.join(SCRIPTS, script), *args], cwd=HERE)
+    except KeyboardInterrupt:
+        print("\n(шаг остановлен — возвращаюсь в меню)")
+        return None
 
 
 def git(*args):
@@ -181,9 +189,18 @@ def act_update():
 
 def act_tryon():
     head("3 · Примерка (Gemini)")
-    print("Откроется браузер. Войди в Google, открой AI Studio,")
-    print("выбери модель Gemini 2.5 Flash Image — потом вернись сюда и нажми Enter.")
-    run("gemini_browser_runner.py")
+    print("Google блокирует ВХОД из автоматизированного браузера.")
+    print("Обход: работать на твоём профиле Chrome, где ты уже вошёл.")
+    print()
+    print("  1 — мой профиль Chrome (нужно закрыть Chrome)   ← пробуем это")
+    print("  2 — отдельный профиль (потребует входа, скорее всего заблокируют)")
+    choice = input("Как запускать? [1/2, Enter=1]: ").strip()
+    if choice == "2":
+        run("gemini_browser_runner.py")
+    else:
+        print("\nЗАКРОЙ Chrome полностью, потом нажми Enter.")
+        input("[Enter] когда закрыл ")
+        run("gemini_browser_runner.py", "--real-profile")
 
 
 def act_deploy():
@@ -253,9 +270,15 @@ def main():
             continue
         try:
             fn()
+        except KeyboardInterrupt:
+            # Ctrl+C = «хватит, назад в меню», а не выход из программы
+            print("\n(остановлено)")
         except Exception as e:
             print("\nОшибка:", e)
-        input("\n[Enter] — вернуться в меню ")
+        try:
+            input("\n[Enter] — вернуться в меню ")
+        except (EOFError, KeyboardInterrupt):
+            pass
 
 
 if __name__ == "__main__":

@@ -43,6 +43,20 @@ GARMENTS_DIR = os.path.join(HERE, "garments")           # вещи из ingest_s
 OUT_DIR = os.path.join(HERE, "tryon_out")               # сюда падают «надетые» фото
 PROFILE_DIR = os.path.join(HERE, ".chrome_profile")     # отдельный профиль (логин Google живёт тут)
 
+# Твой настоящий профиль Chrome. Если он уже залогинен в Google, входить не нужно —
+# значит блокировка «Couldn't sign you in» не сработает.
+REAL_PROFILE = os.path.join(os.environ.get("LOCALAPPDATA", ""), "Google", "Chrome", "User Data")
+
+
+def chrome_is_running():
+    import subprocess
+    try:
+        out = subprocess.run(["tasklist", "/FI", "IMAGENAME eq chrome.exe"],
+                             capture_output=True, text=True, timeout=20).stdout
+        return "chrome.exe" in out
+    except Exception:
+        return False
+
 AISTUDIO_URL = "https://aistudio.google.com/prompts/new_chat"
 
 _KEEP = (
@@ -194,17 +208,37 @@ def main():
     if not todo:
         log("Всё уже сделано."); return
 
+    # Какой профиль Chrome использовать
+    use_real = "--real-profile" in sys.argv
+    profile = REAL_PROFILE if use_real else PROFILE_DIR
+
+    if use_real:
+        if not os.path.isdir(REAL_PROFILE):
+            log("НЕ найден профиль Chrome:", REAL_PROFILE); return
+        if chrome_is_running():
+            log("")
+            log("Chrome сейчас запущен — он держит профиль, взять его нельзя.")
+            log("ЗАКРОЙ Chrome полностью (все окна) и запусти этот пункт снова.")
+            log("Если после закрытия всё равно ругается — проверь в Диспетчере задач,")
+            log("не остались ли процессы chrome.exe в фоне.")
+            return
+        log(f"Работаю на твоём профиле Chrome: {REAL_PROFILE}")
+        log("Вход в Google не потребуется — сессия уже есть в профиле.")
+
     with sync_playwright() as p:
         ctx = p.chromium.launch_persistent_context(
-            PROFILE_DIR, channel="chrome", headless=False,
+            profile, channel="chrome", headless=False,
             args=["--start-maximized"], no_viewport=True,
         )
         page = ctx.pages[0] if ctx.pages else ctx.new_page()
 
-        # первый вход — логин вручную
         page.goto(AISTUDIO_URL, wait_until="domcontentloaded")
-        input("\n>>> Войди в Google, открой AI Studio, выбери модель 'Gemini 2.5 Flash Image'. "
-              "Потом нажми Enter здесь...\n")
+        if use_real:
+            input("\n>>> Проверь: AI Studio открылся уже под твоим аккаунтом? "
+                  "Выбери модель 'Gemini 2.5 Flash Image' и нажми Enter здесь...\n")
+        else:
+            input("\n>>> Войди в Google, открой AI Studio, выбери модель "
+                  "'Gemini 2.5 Flash Image'. Потом нажми Enter здесь...\n")
 
         done = 0
         for pid, gpath, cat in todo:

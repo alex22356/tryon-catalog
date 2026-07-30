@@ -2679,5 +2679,433 @@
       "style": "minimal"
     },
     "gender": "FEMALE"
+  },
+  {
+    "id": "shein_478181566",
+    "name": "Non‑Rebound Slow Rising Caramel Pudding Stress Ball, Soft Crispy Bead Filled Sti",
+    "category": "ACCESSORY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/p/spmp/2026/06/07/06/1780803153cbc27cbb515a70b83b1e300f13a10c2a_squfix_thumbnail_900x.png",
+    "productUrl": "https://onelink.shein.com/45/5xbunvzckuqd",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbunvzckuqd"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 5.2,
+    "currency": "USD",
+    "approx": false,
+    "discount": 47,
+    "sold": 600,
+    "aiCategory": "ACCESSORY"
+  },
+  {
+    "id": "shein_410700090",
+    "name": "DAZY Women's Textured Fabric Elegant Basic Sexy Casual Shawl Cardigan Golf White",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/03/26/81/17744955855afdcbb2e0e93d77b0bab0d3929582a4_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuoxgy4n8u",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuoxgy4n8u"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 5.71,
+    "currency": "USD",
+    "approx": false,
+    "discount": 42
+  },
+  {
+    "id": "shein_284662297",
+    "name": "Women's Skinny Stretch Denim Capri Pants Casual Spring",
+    "category": "BOTTOM",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2025/12/19/3b/176612467243192fcac823fa43e274966412bf900e_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbup5d2kv4l",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbup5d2kv4l"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 22.88,
+    "currency": "USD",
+    "approx": false,
+    "discount": 14,
+    "sold": 100
+  },
+  {
+    "id": "shein_73605321",
+    "name": "Women's Spring/Summer Casual Solid Color Short Sleeve Top + Waist Tie Long Pants",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2026/06/23/0a/178221050399dc3677869f3a96976bb77d1341b18f_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbvm17mct2d",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbvm17mct2d"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 21.19,
+    "currency": "USD",
+    "approx": false,
+    "discount": 11,
+    "sold": 100
+  },
+  {
+    "id": "shein_302236514",
+    "name": "Maweii Plus Size Women Elegant Casual Sleeveless Jumpsuit, Slimming",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2025/11/24/1c/17639541180123c8dafc1d8f5a6a381737bb1a55bd_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuu2xuwtof",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuu2xuwtof"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 24.22,
+    "currency": "USD",
+    "approx": false,
+    "discount": 16,
+    "aiCategory": "FULL_BODY"
+  },
+  {
+    "id": "shein_326181890",
+    "name": "juhmazzocco Lymera Women's Casual Solid Color Black White Short Sleeve T-Shirt T",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/01/28/21/1769594923367696699c32dc8bffac48403e654cc3_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbupp3dpeuk",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbupp3dpeuk"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 11.59,
+    "currency": "USD",
+    "approx": false,
+    "discount": 11
+  },
+  {
+    "id": "shein_39609943",
+    "name": "Floral Print Short Sleeve Casual T-Shirt, Women Round Neck Pullover Flower Patte",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/images3_pi/2024/07/27/87/1722065963db7f9567563961169d5cd6102130be2c_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbupwzicnkm",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbupwzicnkm"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 6.79,
+    "currency": "USD",
+    "approx": false,
+    "discount": 11,
+    "sold": 50
+  },
+  {
+    "id": "shein_32561980",
+    "name": "Faunlyn Elegant Lace Splice Slim Fit Short Sleeve T-Shirt",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/05/11/e3/177848845251f1553196b4e47061ba229b34449c8d_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuqeqrrdlz",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuqeqrrdlz"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 5.03,
+    "currency": "USD",
+    "approx": false,
+    "discount": 51
+  },
+  {
+    "id": "shein_356637557",
+    "name": "Women's Camel Short Sleeve T-Shirt, Lemon Tea And Lemon Slice Print, Loose Fit, ",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2026/01/30/f0/1769761115a5c7d14a66ebe909e80efcb21666f1c2_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbutp4n4fv4",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbutp4n4fv4"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 4.69,
+    "currency": "USD",
+    "approx": false,
+    "discount": 13
+  },
+  {
+    "id": "shein_38267277",
+    "name": "SOLERSUN Light Beige Summer Casual Vacation Holiday Women's Two-Piece Outfits,Pu",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/images3_pi/2025/02/24/e5/1740390430ae2736a0b68bcae97f8646490e70024d_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuuct0h3k7",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuuct0h3k7"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 28.38,
+    "currency": "USD",
+    "approx": false,
+    "discount": 25,
+    "aiCategory": "FULL_BODY"
+  },
+  {
+    "id": "shein_394621309",
+    "name": "Soleia White,Summer,Elegant,Club Night Halter Lace Backless Bow Mesh Mini Dress ",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/03/02/00/1772437791ab2f2c2e04f187788ee989c89d92279f_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuuiq3r5la",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuuiq3r5la"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 13.67,
+    "currency": "USD",
+    "approx": false,
+    "discount": 47
+  },
+  {
+    "id": "shein_422589764",
+    "name": "Franclia Women's White Floral Summer Dress French Elegant Tropical Lapel Waist T",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/03/27/85/1774602055b40b22761178c258cb3b92d4af757758_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuusl8rrl7",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuusl8rrl7"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 22.59,
+    "currency": "USD",
+    "approx": false,
+    "discount": 11
+  },
+  {
+    "id": "shein_71724347",
+    "name": "Women's Elastic Skinny Jeans, Capri Length Denim Shorts, Mature Elegant Style, S",
+    "category": "BOTTOM",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2025/07/03/ed/175150664291a989ec8a91fea29b6a393cc23bc160_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuuyicnlg3",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuuyicnlg3"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 23.39,
+    "currency": "USD",
+    "approx": false,
+    "discount": 11
+  },
+  {
+    "id": "shein_73221919",
+    "name": "Women's Distressed Skinny Solid Color Pocket Summer Casual Denim Shorts, With Po",
+    "category": "BOTTOM",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2025/07/10/e4/1752115506abf6c2e6958fb1858446e6c92ef46ead_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuv8di2yet",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuv8di2yet"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 15.58,
+    "currency": "USD",
+    "approx": false,
+    "discount": 14,
+    "sold": 50
+  },
+  {
+    "id": "shein_87861389",
+    "name": "Maweii Plus Size Women's Elegant Pleated Asymmetrical One Shoulder Design Jumpsu",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2025/05/27/d3/17483340533311c60bdce6f52c635971cbf0d4d60e_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuvealk19m",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuvealk19m"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 17.09,
+    "currency": "USD",
+    "approx": false,
+    "discount": 33
+  },
+  {
+    "id": "shein_368576460",
+    "name": "Aloruh Women's Solid Color Oblique Shoulder Long Sleeve Pleated Design Elegant M",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/02/04/bc/1770189446b57d41edbd5ce1ad062c81bd48240113_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbvmqv0tiqq",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbvmqv0tiqq"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 11.93,
+    "currency": "USD",
+    "approx": false,
+    "discount": 47
+  },
+  {
+    "id": "shein_471215292",
+    "name": "Swim Lushoire Women's Burgundy Summer Top With Side Ruched Straps, Gold Decor Bu",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/05/15/17/1778821455db70d30c00d8a5004f63f69b70853e39_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuvq4sagwz",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuvq4sagwz"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 23.09,
+    "currency": "USD",
+    "approx": false,
+    "discount": 10
+  },
+  {
+    "id": "shein_429083561",
+    "name": "SHEIN Clasi Orange Silhouette Floral Jacquard Romantic Vacation Elegant A-Line D",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/03/24/60/1774321166560f8e08dd77ea23d9447fea246cb1fc_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuvy0wjo09",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuvy0wjo09"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 18.26,
+    "currency": "USD",
+    "approx": false,
+    "discount": 38
+  },
+  {
+    "id": "shein_423917904",
+    "name": "[Top] BuyK Women Fall Back To School Lightweight Knit Top Long Sleeve Pullover S",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/ssms/2026/04/02/8e/1775126840e9a1251076b728106cddb86bad278931_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuw1yyd10z",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuw1yyd10z"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 16.46,
+    "currency": "USD",
+    "approx": false,
+    "discount": 21
+  },
+  {
+    "id": "shein_439528891",
+    "name": "MOTF PREMIUM LIGHTWEIGHT SNAKE SKIN PRINT TANK TOP, ANIMAL PRINT, VINTAGE SEXY S",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/04/28/98/17773763155381e8642d1826d640f2c22fa8bf9a8a_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbuwnob0dmo",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbuwnob0dmo"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 9.5,
+    "currency": "USD",
+    "approx": false,
+    "discount": 46,
+    "sold": 100
+  },
+  {
+    "id": "shein_44428982",
+    "name": "2pcs/Set Women's Fashion & Comfortable Color Block Zip-Up Jacket And Casual Pant",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2026/03/31/5a/1774961679d4bd1d518e8188855e1351804de41eea_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbvnoejqgf3",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbvnoejqgf3"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 26.47,
+    "currency": "USD",
+    "approx": false,
+    "discount": 29,
+    "aiCategory": "FULL_BODY"
+  },
+  {
+    "id": "shein_157450248",
+    "name": "SHEIN MOD White And Pink Summer Cottage Core Garden Party Dress, Vintage Floral ",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2025/09/15/9c/1757921391a826d0de2b84bfb39464ad51bee77cad_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbvonx35o4v",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbvonx35o4v"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 27.89,
+    "currency": "USD",
+    "approx": false,
+    "discount": 11
   }
 ]
