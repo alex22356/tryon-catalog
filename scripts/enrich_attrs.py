@@ -134,16 +134,82 @@ def alive():
         return False
 
 
+# ─────────── цвет по ФОТО вещи (SHEIN редко пишет цвет в названии) ───────────
+VISION_MODEL = "qwen2.5vl:3b"
+GARMENTS = os.path.join(HERE, "garments")
+VISION_PROMPT = (
+    "Look at this clothing item. Answer with ONE word only — its main colour, chosen from: "
+    "WHITE BLACK GREY BEIGE BROWN RED PINK ORANGE YELLOW GREEN BLUE NAVY PURPLE GOLD "
+    "SILVER CREAM MULTI. One word, nothing else.")
+
+
+def color_from_photo(pid):
+    """Цвет вещи по её фото локальной визуальной моделью. None — если не вышло."""
+    import base64
+    path = os.path.join(GARMENTS, pid + ".jpg")
+    if not os.path.exists(path):
+        return None
+    b64 = base64.b64encode(open(path, "rb").read()).decode()
+    body = json.dumps({"model": VISION_MODEL, "prompt": VISION_PROMPT, "images": [b64],
+                       "stream": False,
+                       "options": {"temperature": 0, "num_predict": 10}}).encode()
+    req = urllib.request.Request(OLLAMA, data=body,
+                                 headers={"Content-Type": "application/json"})
+    raw = json.load(urllib.request.urlopen(req, timeout=300))["response"].upper()
+    for c in COLORS:
+        if c in raw:
+            return c
+    return None
+
+
+def fill_colors(items, limit=0):
+    """Досматривает фото у товаров, где цвет из названия не вытащился."""
+    todo = [p for p in items if (p.get("attrs") or {}).get("color") == "NA"]
+    if limit:
+        todo = todo[:limit]
+    if not todo:
+        print("цвета у всех определены")
+        return 0
+    print(f"смотрю фото визуальной моделью ({VISION_MODEL}): {len(todo)} шт. "
+          f"(~{len(todo) * 14 // 60} мин)")
+    done = 0
+    for i, p in enumerate(todo, 1):
+        try:
+            c = color_from_photo(p["id"])
+        except Exception as e:
+            print(f"  ! {p['id']}: {str(e)[:50]}")
+            continue
+        if not c:
+            continue
+        p["attrs"]["color"] = c
+        p["attrs"]["colorFrom"] = "photo"
+        done += 1
+        if i <= 3 or i % 20 == 0:
+            print(f"  [{i}/{len(todo)}] {c:8} {p['name'][:44]}")
+        if i % 10 == 0:
+            json.dump(items, io.open(PRODUCTS, "w", encoding="utf-8"),
+                      ensure_ascii=False, indent=2)
+    json.dump(items, io.open(PRODUCTS, "w", encoding="utf-8"),
+              ensure_ascii=False, indent=2)
+    print(f"цветов определено по фото: {done}")
+    return done
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--force", action="store_true")
+    ap.add_argument("--colors", action="store_true",
+                    help="досмотреть цвета по фото визуальной моделью")
     args = ap.parse_args()
 
     if not alive():
         print("Ollama не отвечает. Запусти:  ollama serve")
         return
     items = json.load(io.open(PRODUCTS, encoding="utf-8"))
+    if args.colors:
+        fill_colors(items, args.limit)
+        return
     todo = [p for p in items if args.force or not p.get("attrs")]
     if args.limit:
         todo = todo[:args.limit]
@@ -185,6 +251,10 @@ def main():
         if g:
             cnt[g] = cnt.get(g, 0) + 1
     print("по полу:", cnt)
+    na = sum(1 for p in items if (p.get("attrs") or {}).get("color") == "NA")
+    if na:
+        print(f"\nбез цвета: {na} — досмотреть по фото:")
+        print("  python scripts/enrich_attrs.py --colors")
 
 
 if __name__ == "__main__":
