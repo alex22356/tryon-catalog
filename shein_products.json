@@ -16,7 +16,16 @@
     "price": 4.69,
     "currency": "USD",
     "approx": false,
-    "discount": 13
+    "discount": 13,
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SUMMER",
+      "occasion": "CASUAL",
+      "sleeve": "SHORT",
+      "fit": "LOOSE",
+      "color": "NA",
+      "style": "minimal"
+    }
   },
   {
     "id": "shein_73605321",
@@ -36,7 +45,16 @@
     "currency": "USD",
     "approx": false,
     "discount": 11,
-    "sold": 100
+    "sold": 100,
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SPRING_FALL",
+      "occasion": "CASUAL",
+      "sleeve": "SHORT",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "casual"
+    }
   },
   {
     "id": "shein_422589764",
@@ -55,7 +73,16 @@
     "price": 22.59,
     "currency": "USD",
     "approx": false,
-    "discount": 11
+    "discount": 11,
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SUMMER",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "REGULAR",
+      "color": "WHITE",
+      "style": "elegant"
+    }
   },
   {
     "id": "shein_71724347",
@@ -74,7 +101,16 @@
     "price": 23.39,
     "currency": "USD",
     "approx": false,
-    "discount": 11
+    "discount": 11,
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "WINTER",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "SLIM",
+      "color": "NA",
+      "style": "elegant"
+    }
   },
   {
     "id": "shein_87861389",
@@ -93,7 +129,16 @@
     "price": 17.09,
     "currency": "USD",
     "approx": false,
-    "discount": 33
+    "discount": 33,
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "ALL",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "elegant"
+    }
   },
   {
     "id": "shein_368576460",
@@ -112,7 +157,16 @@
     "price": 11.93,
     "currency": "USD",
     "approx": false,
-    "discount": 47
+    "discount": 47,
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "ALL",
+      "occasion": "CASUAL",
+      "sleeve": "LONG",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "elegant"
+    }
   },
   {
     "id": "shein_439528891",
@@ -126,12 +180,21 @@
     "regions": [
       "US"
     ],
-    "gender": "FEMALE",
+    "gender": "UNISEX",
     "store": "SHEIN",
     "price": 9.5,
     "currency": "USD",
     "approx": false,
     "discount": 46,
-    "sold": 100
+    "sold": 100,
+    "attrs": {
+      "gender": "UNISEX",
+      "season": "SUMMER",
+      "occasion": "CASUAL",
+      "sleeve": "SLEEVELESS",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "vintage"
+    }
   }
 ]
