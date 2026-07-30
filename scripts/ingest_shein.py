@@ -35,6 +35,30 @@ LINKS = os.path.join(HERE, "shein_links.txt")
 OUT_JSON = os.path.join(HERE, "shein_products.json")
 GARMENTS = os.path.join(HERE, "garments")
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+# ВАЖНО: без Accept CDN отдаёт AVIF (Ollama и часть Android их не читают).
+IMG_HEADERS = {**UA, "Accept": "image/jpeg,image/png;q=0.9,*/*;q=0.1"}
+
+
+def save_image(data: bytes, path: str) -> bool:
+    """
+    Пишет фото вещи ВСЕГДА как настоящий JPEG.
+    SHEIN может отдать AVIF/WEBP — конвертируем, иначе ломается и разметка, и примерка.
+    """
+    if len(data) < 2000:
+        return False
+    if data[:2] == b"\xff\xd8":                      # уже JPEG
+        with open(path, "wb") as f:
+            f.write(data)
+        return True
+    try:
+        from PIL import Image
+        import io as _io
+        im = Image.open(_io.BytesIO(data))
+        im.convert("RGB").save(path, "JPEG", quality=90)
+        return True
+    except Exception as e:
+        print(f"  ! не смог сконвертировать картинку: {str(e)[:60]}")
+        return False
 
 # порядок важен: обувь/платья/низ проверяем ДО общего TOP
 CATEGORY_RULES = [
@@ -171,10 +195,9 @@ def ingest_extracted(records):
         img = bigger(img)
         cat = categorize(name)
         try:
-            data = requests.get(img, headers=UA, timeout=25).content
-            if len(data) < 2000:
-                raise ValueError("слишком маленький файл")
-            open(os.path.join(GARMENTS, pid + ".jpg"), "wb").write(data)
+            data = requests.get(img, headers=IMG_HEADERS, timeout=25).content
+            if not save_image(data, os.path.join(GARMENTS, pid + ".jpg")):
+                raise ValueError("картинка не сохранилась")
         except Exception as e:
             print(f"  ! фото не скачалось {pid}: {str(e)[:50]}")
             continue
@@ -237,8 +260,9 @@ def main():
             cat = categorize(name)
             # качаем референс вещи
             gpath = os.path.join(GARMENTS, pid + ".jpg")
-            data = requests.get(img, headers=UA, timeout=25).content
-            open(gpath, "wb").write(data)
+            data = requests.get(img, headers=IMG_HEADERS, timeout=25).content
+            if not save_image(data, gpath):
+                raise ValueError("картинка не сохранилась")
             products[pid] = {
                 "id": pid,
                 "name": name[:80],
