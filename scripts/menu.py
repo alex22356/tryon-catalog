@@ -193,10 +193,20 @@ def act_tryon():
     print("занятый профиль Chrome нельзя. Рабочий путь: ты сам запускаешь")
     print("свой Chrome с отладочным портом, а скрипт к нему подключается.")
     print()
-    print("  1 — подключиться к моему Chrome (порт 9222)   ← рабочий вариант")
-    print("  2 — запустить Chrome самому на моём профиле   (виснет, не советую)")
+    print("  1 — ЧЕРЕЗ API (полный автомат, ~4 цента за вещь)  ← рабочий вариант")
+    print("  2 — Chrome на моём профиле                   (виснет)")
     print("  3 — отдельный профиль                        (заблокируют вход)")
-    choice = input("Как запускать? [1/2/3, Enter=1]: ").strip()
+    print("  4 — подключиться к Chrome по порту 9222      (Chrome 136+ запрещает)")
+    choice = input("Как запускать? [1/2/3/4, Enter=1]: ").strip()
+
+    if choice == "1" or choice == "":
+        print("\nСколько вещей примерить? (Enter = все из очереди)")
+        n = input("Количество: ").strip()
+        if n.isdigit():
+            run("gemini_api_runner.py", "--limit", n)
+        else:
+            run("gemini_api_runner.py")
+        return
 
     if choice == "2":
         print("\nЗАКРОЙ Chrome полностью, потом нажми Enter.")
@@ -204,11 +214,10 @@ def act_tryon():
         run("gemini_browser_runner.py", "--real-profile")
     elif choice == "3":
         run("gemini_browser_runner.py")
-    else:
+    elif choice == "4":
         bat = os.path.join(HERE, "tools", "chrome_debug.bat")
-        print("\nСейчас открою запускатель Chrome с портом 9222.")
-        print("Он закроет твои окна Chrome и откроет AI Studio.")
-        print("Там: проверь аккаунт, выбери модель Gemini 2.5 Flash Image.")
+        print("\nОткрою запускатель Chrome с портом 9222.")
+        print("Учти: Chrome 136+ игнорирует порт на основном профиле — скорее всего не выйдет.")
         input("\n[Enter] чтобы запустить Chrome ")
         if os.path.exists(bat):
             subprocess.Popen(["cmd", "/c", "start", "", bat], shell=False)
@@ -216,6 +225,8 @@ def act_tryon():
             print("не нашёл", bat)
         input("\n[Enter] когда Chrome открылся и модель выбрана ")
         run("gemini_browser_runner.py", "--attach")
+    else:
+        print("не понял выбор — вернись в меню и выбери 1")
 
 
 def act_deploy():
