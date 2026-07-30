@@ -36,6 +36,7 @@ APP = os.path.abspath(os.path.join(HERE, "..", "app", "src", "main"))
 
 TRYON_DIR = os.path.join(HERE, "tryon_out")
 PRODUCTS_JSON = os.path.join(HERE, "shein_products.json")
+CONFIG = os.path.join(HERE, "publish_config.json")
 MODEL_IMG = os.path.join(APP, "res", "drawable-nodpi", "premium_model.jpg")
 ASSETS_PRODUCTS = os.path.join(APP, "assets", "products")
 CATALOG = os.path.join(APP, "assets", "catalog.json")
@@ -87,6 +88,28 @@ def load_products():
     return {p["id"]: p for p in json.load(open(PRODUCTS_JSON, encoding="utf-8"))}
 
 
+def affiliate_template():
+    """Шаблон партнёрской ссылки из publish_config.json (пусто = выключено)."""
+    if not os.path.exists(CONFIG):
+        return ""
+    try:
+        return (json.load(open(CONFIG, encoding="utf-8")).get("affiliateTemplate") or "").strip()
+    except Exception:
+        return ""
+
+
+def affiliate_url(url, template):
+    """
+    Подставляет партнёрские метки в обычную ссылку на товар.
+    onelink-ссылки не трогаем — они уже партнёрские.
+    """
+    if not url or not template:
+        return url
+    if "onelink.shein.com" in url:
+        return url
+    return template.replace("{url}", url.split("?")[0])
+
+
 def load_catalog():
     if os.path.exists(CATALOG):
         return json.load(open(CATALOG, encoding="utf-8"))
@@ -107,6 +130,12 @@ def main():
     products = load_products()
     catalog = load_catalog()
     by_id = {it["id"]: it for it in catalog.get("items", [])}
+    aff_tpl = affiliate_template()
+    if aff_tpl:
+        log(f"партнёрские метки: включены  ({aff_tpl[:52]}…)")
+    else:
+        log("партнёрские метки: ВЫКЛЮЧЕНЫ — переходы не принесут комиссию")
+        log("  включить: affiliateTemplate в publish_config.json")
 
     if not os.path.isdir(TRYON_DIR):
         log("Нет папки с примерками:", TRYON_DIR)
@@ -153,7 +182,7 @@ def main():
             "approx": True,
         })
         if meta.get("productUrl"):
-            item["productUrl"] = meta["productUrl"]
+            item["productUrl"] = affiliate_url(meta["productUrl"], aff_tpl)
         by_id[pid] = item
         done += 1
         log(f"✓ {pid}  [{category}]  overlay+thumb → assets/products")

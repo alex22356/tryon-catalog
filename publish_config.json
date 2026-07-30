@@ -1,4 +1,7 @@
 {
   "_note": "baseUrl — адрес, где лежит опубликованный каталог. Для GitHub Pages: https://<логин>.github.io/<репозиторий>  (без слэша на конце). После заполнения впиши в local.properties: CATALOG_URL=<baseUrl>/catalog.json",
-  "baseUrl": "https://alex22356.github.io/tryon-catalog"
+  "baseUrl": "https://alex22356.github.io/tryon-catalog",
+  "_affiliate_note": "affiliateTemplate — подстановка партнёрских меток в ссылки товаров, собранных закладкой (onelink-ссылки не меняются, они уже партнёрские). {url} = адрес товара. ПУСТО = выключено. Твои метки видны в раскрытой onelink: url_from=affiliate_koc_4706910598, campaign_id=28. ПЕРЕД включением проверь, что переход по такой ссылке засчитывается в Data Center кабинета: включи, открой ссылку товара с телефона, посмотри статистику. Не засчитывается — используй Convert Link или дождись фида Awin.",
+  "affiliateTemplate": "",
+  "affiliateTemplateExample": "{url}?url_from=affiliate_koc_4706910598&campaign_id=28"
 }
