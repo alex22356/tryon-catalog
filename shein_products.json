@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "shein_356637557",
+    "name": "Women's Camel Short Sleeve T-Shirt, Lemon Tea And Lemon Slice Print, Loose Fit, ",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2026/01/30/f0/1769761115a5c7d14a66ebe909e80efcb21666f1c2_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbxn98w8ccl",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbxn98w8ccl"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 4.69,
+    "currency": "USD",
+    "approx": false,
+    "discount": 13
+  },
+  {
+    "id": "shein_73605321",
+    "name": "Women's Spring/Summer Casual Solid Color Short Sleeve Top + Waist Tie Long Pants",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2026/06/23/0a/178221050399dc3677869f3a96976bb77d1341b18f_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbxnf60466o",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbxnf60466o"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 21.19,
+    "currency": "USD",
+    "approx": false,
+    "discount": 11,
+    "sold": 100
+  },
+  {
+    "id": "shein_422589764",
+    "name": "Franclia Women's White Floral Summer Dress French Elegant Tropical Lapel Waist T",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/03/27/85/1774602055b40b22761178c258cb3b92d4af757758_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbxnr06si24",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbxnr06si24"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 22.59,
+    "currency": "USD",
+    "approx": false,
+    "discount": 11
+  },
+  {
+    "id": "shein_71724347",
+    "name": "Women's Elastic Skinny Jeans, Capri Length Denim Shorts, Mature Elegant Style, S",
+    "category": "BOTTOM",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2025/07/03/ed/175150664291a989ec8a91fea29b6a393cc23bc160_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbxnywb3sxp",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbxnywb3sxp"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 23.39,
+    "currency": "USD",
+    "approx": false,
+    "discount": 11
+  },
+  {
+    "id": "shein_87861389",
+    "name": "Maweii Plus Size Women's Elegant Pleated Asymmetrical One Shoulder Design Jumpsu",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2025/05/27/d3/17483340533311c60bdce6f52c635971cbf0d4d60e_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbxo6sfk0t0",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbxo6sfk0t0"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 17.09,
+    "currency": "USD",
+    "approx": false,
+    "discount": 33
+  },
+  {
+    "id": "shein_368576460",
+    "name": "Aloruh Women's Solid Color Oblique Shoulder Long Sleeve Pleated Design Elegant M",
+    "category": "FULL_BODY",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/02/04/bc/1770189446b57d41edbd5ce1ad062c81bd48240113_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbxoaqhz5oh",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbxoaqhz5oh"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 11.93,
+    "currency": "USD",
+    "approx": false,
+    "discount": 47
+  },
+  {
+    "id": "shein_439528891",
+    "name": "MOTF PREMIUM LIGHTWEIGHT SNAKE SKIN PRINT TANK TOP, ANIMAL PRINT, VINTAGE SEXY S",
+    "category": "TOP",
+    "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/04/28/98/17773763155381e8642d1826d640f2c22fa8bf9a8a_thumbnail_900x.jpg",
+    "productUrl": "https://onelink.shein.com/45/5xbxowfu7rce",
+    "productUrlByRegion": {
+      "US": "https://onelink.shein.com/45/5xbxowfu7rce"
+    },
+    "regions": [
+      "US"
+    ],
+    "gender": "FEMALE",
+    "store": "SHEIN",
+    "price": 9.5,
+    "currency": "USD",
+    "approx": false,
+    "discount": 46,
+    "sold": 100
+  }
+]

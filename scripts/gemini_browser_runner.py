@@ -102,6 +102,45 @@ def log(*a):
     print(time.strftime("%H:%M:%S"), *a, flush=True)
 
 
+class Heartbeat:
+    """
+    Пульс для долгих шагов: пока идёт операция, каждые N секунд печатает,
+    сколько уже ждём. Так сразу видно — работает или зависло.
+
+        with Heartbeat("запуск Chrome", warn_after=45):
+            ...долгая операция...
+    """
+
+    def __init__(self, what, every=5, warn_after=0, hint=""):
+        self.what, self.every = what, every
+        self.warn_after, self.hint = warn_after, hint
+        self._stop = None
+        self._th = None
+
+    def __enter__(self):
+        import threading
+        self._stop = threading.Event()
+
+        def tick():
+            t0 = time.time()
+            warned = False
+            while not self._stop.wait(self.every):
+                el = int(time.time() - t0)
+                log(f"    … {self.what}: {el} сек")
+                if self.warn_after and el >= self.warn_after and not warned:
+                    warned = True
+                    log(f"    ! долго. {self.hint}" if self.hint else "    ! подозрительно долго")
+        self._th = threading.Thread(target=tick, daemon=True)
+        self._th.start()
+        return self
+
+    def __exit__(self, *exc):
+        self._stop.set()
+        if self._th:
+            self._th.join(timeout=1)
+        return False
+
+
 def categories():
     """id → категория (из shein_products.json), чтобы выбрать правильный промт."""
     path = os.path.join(HERE, "shein_products.json")
@@ -200,9 +239,11 @@ def run_one(page, model_img, garment_img, out_path, prompt=PROMPT):
     deadline = time.time() + RESULT_TIMEOUT
     result_img = None
     waited = 0
+    log("    · жду ответ Gemini (максимум %ds)" % RESULT_TIMEOUT)
     while time.time() < deadline:
-        if waited and waited % 15 == 0:
-            log("    · жду картинку… %ds" % waited)
+        if waited and int(waited) % 10 == 0:
+            left = int(deadline - time.time())
+            log("    · рисует… прошло %ds, осталось ждать %ds" % (int(waited), left))
         if page_has_ratelimit(page):
             raise RateLimit()
         # берём последнюю картинку-ответ (blob/data), не превью-инпуты
@@ -285,16 +326,31 @@ def main():
 
     with sync_playwright() as p:
         log("запускаю Chrome…")
-        ctx = p.chromium.launch_persistent_context(
-            profile, channel="chrome", headless=False,
-            args=["--start-maximized"], no_viewport=True,
-        )
+        hint = ("Chrome открылся, но подключиться к профилю не удаётся. "
+                "Проверь: не осталось ли процессов chrome.exe (Диспетчер задач), "
+                "и нет ли окна Chrome с вопросом о восстановлении сессии.")
+        try:
+            with Heartbeat("запускаю Chrome", every=5, warn_after=40, hint=hint):
+                ctx = p.chromium.launch_persistent_context(
+                    profile, channel="chrome", headless=False,
+                    args=["--start-maximized"], no_viewport=True,
+                    timeout=90000,
+                )
+        except Exception as e:
+            log("НЕ СМОГ запустить Chrome на этом профиле: %s" % str(e)[:120])
+            log("")
+            log("Это известная хрупкость работы на реальном профиле.")
+            log("Варианты: 1) убить все chrome.exe и повторить;")
+            log("          2) пункт 3 → вариант 2 (отдельный профиль);")
+            log("          3) включить биллинг и перейти на API (полный автомат).")
+            return
         log("Chrome запущен, вкладок: %d" % len(ctx.pages))
         page = ctx.pages[0] if ctx.pages else ctx.new_page()
 
         log("открываю AI Studio: %s" % AISTUDIO_URL)
         try:
-            page.goto(AISTUDIO_URL, wait_until="domcontentloaded", timeout=60000)
+            with Heartbeat("загружаю AI Studio", every=5, warn_after=30):
+                page.goto(AISTUDIO_URL, wait_until="domcontentloaded", timeout=60000)
         except Exception as e:
             log("не смог открыть страницу: %s" % str(e)[:90])
         log("страница: %s" % page.url[:70])

@@ -2,3 +2,13 @@
 #   пункт 1 меню — кабинет SHEIN, ловит кнопку «Earn» (с ценами)
 #   пункт 5 меню — закладка, собирает пачкой с категории
 # Формат: US|https://...   или   EU|https://...
+US|https://onelink.shein.com/45/5xbxn98w8ccl
+US|https://onelink.shein.com/45/5xbxnf60466o
+US|https://onelink.shein.com/45/5xbxnr06si24
+US|https://onelink.shein.com/45/5xbxnywb3sxp
+US|https://onelink.shein.com/45/5xbxo6sfk0t0
+US|https://onelink.shein.com/45/5xbxoaqhz5oh
+US|https://onelink.shein.com/45/5xbxowfu7rce
+
+# --- добавлено 2026-07-30 13:57 ---
+https://onelink.shein.com/45/5xbxowfu7rce
