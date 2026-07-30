@@ -5,7 +5,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/05/27/84/1779815568d1a32e5346122f586410ff81d0c09a83.jpg",
     "productUrl": "https://onelink.shein.com/45/5x4po236q8lx",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SUMMER",
+      "occasion": "CASUAL",
+      "sleeve": "SHORT",
+      "fit": "REGULAR",
+      "color": "WHITE",
+      "style": "romantic"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x52z4scbyny",
@@ -13,7 +23,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/images3_pi/2023/03/30/168016216474664ba4d5e697606a806ad5cd4a049b_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x52z4scbyny",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "UNISEX",
+      "season": "WINTER",
+      "occasion": "CASUAL",
+      "sleeve": "LONG",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "vintage"
+    },
+    "gender": "UNISEX"
   },
   {
     "id": "shein_5x530e61x825",
@@ -22,7 +42,17 @@
     "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/05/02/2c/1777712501efaf054937d1c5c11795c0924f32fe20_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x530e61x825",
     "store": "SHEIN",
-    "aiCategory": "FULL_BODY"
+    "aiCategory": "FULL_BODY",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SPRING_FALL",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "NA",
+      "color": "NA",
+      "style": "minimal"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x531doly7nf",
@@ -30,7 +60,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/images3_pi/2024/07/15/7b/172100846293daae496af63106a3f5f0e16a5a4221_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x531doly7nf",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SUMMER",
+      "occasion": "CASUAL",
+      "sleeve": "SHORT",
+      "fit": "SLIM",
+      "color": "WHITE",
+      "style": "minimal"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x5325b1gvhr",
@@ -38,7 +78,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2026/03/11/98/177321215828245c373b438779f1e4b7d2fe497f42_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x5325b1gvhr",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SUMMER",
+      "occasion": "CASUAL",
+      "sleeve": "SLEEVELESS",
+      "fit": "SLIM",
+      "color": "NA",
+      "style": "y2k"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x5336sm293f",
@@ -46,7 +96,17 @@
     "category": "BOTTOM",
     "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/02/07/24/1770437713f01282a11b4fde38f3b06e4aa688d903_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x5336sm293f",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SPRING_FALL",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "minimal"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x534xxlo07x",
@@ -54,7 +114,17 @@
     "category": "BOTTOM",
     "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/04/14/5d/17761306086c1235c1726ab29a5637915d27bc1656_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x534xxlo07x",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SPRING_FALL",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "casual"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x5365ca57pa",
@@ -62,7 +132,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2025/07/05/f7/17517089473b4d933df7e75a54bd7c4c5525e20f8f_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x5365ca57pa",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SPRING_FALL",
+      "occasion": "CASUAL",
+      "sleeve": "LONG",
+      "fit": "REGULAR",
+      "color": "WHITE",
+      "style": "minimal"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x537cqz86yh",
@@ -70,7 +150,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/images3_pi/2023/11/21/f3/1700557072a53808b9b702e89c6c3af8f2671ff6ce_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x537cqz86yh",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SPRING_FALL",
+      "occasion": "CASUAL",
+      "sleeve": "SHORT",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "minimal"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x539fq4wi99",
@@ -78,7 +168,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/02/06/46/1770346400409f96bb5ee233fcb21343469094a6a2_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x539fq4wi99",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "ALL",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "romantic"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x53aj6r5lop",
@@ -86,7 +186,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/images3_pi/2024/11/27/c3/1732697780956fbf15584dd9d76fbfb600791e9989_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x53aj6r5lop",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "WINTER",
+      "occasion": "CASUAL",
+      "sleeve": "LONG",
+      "fit": "LOOSE",
+      "color": "BLACK",
+      "style": "edgy"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x53bqlg1kd1",
@@ -94,7 +204,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/images3_pi/2024/09/13/9c/1726214568b3ba6bb9665b24243834aa9689ce24fc_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x53bqlg1kd1",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "ALL",
+      "occasion": "CASUAL",
+      "sleeve": "LONG",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "minimal"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x53dloi0c9u",
@@ -102,7 +222,17 @@
     "category": "FULL_BODY",
     "garmentRef": "https://img.ltwebstatic.com/images3_pi/2025/04/01/14/1743494579caa4f1848711afeb39e87db4e8703c54_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x53dloi0c9u",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SUMMER",
+      "occasion": "CASUAL",
+      "sleeve": "SLEEVELESS",
+      "fit": "REGULAR",
+      "color": "WHITE",
+      "style": "romantic"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x53eh8z9jz5",
@@ -110,7 +240,17 @@
     "category": "FULL_BODY",
     "garmentRef": "https://img.ltwebstatic.com/images3_pi/2024/09/25/2a/1727255418906bfe5c56649f9d3440d06b0a7c178a_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x53eh8z9jz5",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SPRING_FALL",
+      "occasion": "CASUAL",
+      "sleeve": "LONG",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "boho"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x53fonoafdz",
@@ -118,7 +258,17 @@
     "category": "FOOTWEAR",
     "garmentRef": "https://img.ltwebstatic.com/images3_spmp/2024/10/21/9e/1729525910b08ae63e1eb0b2d283213c744ca4d2df_thumbnail_900x.png",
     "productUrl": "https://onelink.shein.com/45/5x53fonoafdz",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SPRING_FALL",
+      "occasion": "SPORT",
+      "sleeve": "NA",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "casual"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_5x53gw2cmpuu",
@@ -126,7 +276,17 @@
     "category": "FOOTWEAR",
     "garmentRef": "https://img.ltwebstatic.com/v4/j/spmp/2025/11/27/e5/1764245191663ae3f9d759e66a4c46e1f9f243d5f4_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x53gw2cmpuu",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "UNISEX",
+      "season": "WINTER",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "vintage"
+    },
+    "gender": "UNISEX"
   },
   {
     "id": "shein_5x53hlpr8cl7",
@@ -134,7 +294,17 @@
     "category": "FOOTWEAR",
     "garmentRef": "https://img.ltwebstatic.com/images3_spmp/2024/08/02/20/1722592642e6e1877398f8f79db68617cd1e3899b5_thumbnail_900x.jpg",
     "productUrl": "https://onelink.shein.com/45/5x53hlpr8cl7",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "WINTER",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "vintage"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_93433295",
@@ -142,7 +312,17 @@
     "category": "TOP",
     "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2025/07/14/78/17524573141f792d085e620843d4128bad17478f40_thumbnail_900x.avif",
     "productUrl": "https://us.shein.com/Lalippa-Women-s-Loose-Split-Zip-Up-Hoodie-Graduation-Teacher-Back-To-School-Pullover-Fall-p-93433295.html",
-    "store": "SHEIN"
+    "store": "SHEIN",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "ALL",
+      "occasion": "CASUAL",
+      "sleeve": "SLEEVELESS",
+      "fit": "LOOSE",
+      "color": "NA",
+      "style": "minimal"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_200574488",
@@ -151,7 +331,17 @@
     "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/06/12/e3/1781227709c999ce96a99503f10612808b15cd72aa_thumbnail_900x.avif",
     "productUrl": "https://us.shein.com/Lalippa-Women-s-Letter-Print-Drop-Shoulder-Long-Sleeve-Zip-Front-Casual-Sweatshirt-Autumn-Winter-p-200574488.html",
     "store": "SHEIN",
-    "aiCategory": "TOP"
+    "aiCategory": "TOP",
+    "attrs": {
+      "gender": "FEMALE",
+      "season": "SUMMER",
+      "occasion": "CASUAL",
+      "sleeve": "LONG",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "boho"
+    },
+    "gender": "FEMALE"
   },
   {
     "id": "shein_480675149",
@@ -160,7 +350,17 @@
     "garmentRef": "https://img.ltwebstatic.com/v4/j/pi/2026/05/24/70/1779610488b69b4b919079d017b372dcd89b23f5c4_thumbnail_900x.avif",
     "productUrl": "https://us.shein.com/Muchica-Casual-Minimalist-Street-Style-Washed-Effect-Branch-Camouflage-Allover-Print-Lightweight-Sweatshirt-Suitable-For-Autumn-Winter-And-Spring-Summer-Sports-Style-p-480675149.html",
     "store": "SHEIN",
-    "aiCategory": "FULL_BODY"
+    "aiCategory": "FULL_BODY",
+    "attrs": {
+      "gender": "UNISEX",
+      "season": "ALL",
+      "occasion": "CASUAL",
+      "sleeve": "NA",
+      "fit": "REGULAR",
+      "color": "NA",
+      "style": "minimal"
+    },
+    "gender": "UNISEX"
   },
   {
     "id": "shein_354859987",

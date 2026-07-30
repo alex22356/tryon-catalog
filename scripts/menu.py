@@ -179,8 +179,22 @@ def act_deploy():
         print("\npush не прошёл — смотри сообщение выше.")
 
 
+def act_catch():
+    head("5 · Ловлю ссылки из буфера")
+    print("Копируй ссылки в браузере (Convert Link → Copy, share, или адресную строку).")
+    print("Каждую новую сразу запишу. Закончил — Ctrl+C.")
+    run("catch_links.py")
+
+
+def act_enrich():
+    head("6 · Разметка атрибутов локальным ИИ")
+    print("Определю пол, цвет, сезон, повод, стиль — для фильтров и ИИ-стилиста.")
+    run("enrich_attrs.py")
+
+
 def act_all():
     act_update()
+    act_enrich()
     act_tryon()
     act_deploy()
 
@@ -195,13 +209,17 @@ MENU = """
   3  Примерка          одеть модель в новые вещи
   4  Выложить всем     опубликовать клиентам
 
-  9  Всё сразу (2 → 3 → 4)
+  5  Ловить ссылки     копируешь в браузере — я сам подхватываю
+  6  Разметить ИИ      пол, цвет, стиль, сезон (локальный ИИ)
+
+  9  Всё сразу (2 → 6 → 3 → 4)
   0  Выход
 """
 
 
 def main():
-    actions = {"1": act_grab, "2": act_update, "3": act_tryon, "4": act_deploy, "9": act_all}
+    actions = {"1": act_grab, "2": act_update, "3": act_tryon, "4": act_deploy,
+                   "5": act_catch, "6": act_enrich, "9": act_all}
     while True:
         print(MENU)
         try:

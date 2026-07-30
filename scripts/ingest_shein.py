@@ -118,11 +118,24 @@ def fetch(url: str):
 
 
 def read_links():
+    """
+    Возвращает [(region, url)]. Строка может быть с пометкой региона:
+        US|https://onelink.shein.com/45/xxxx
+    Без пометки — считаем US (так писалось раньше).
+    """
     out = []
     for line in open(LINKS, encoding="utf-8"):
         line = line.strip()
-        if line and not line.startswith("#"):
-            out.append(line)
+        if not line or line.startswith("#"):
+            continue
+        if "|" in line:
+            reg, url = line.split("|", 1)
+            reg = reg.strip().upper()
+            if reg not in ("US", "EU"):
+                reg, url = "US", line
+        else:
+            reg, url = "US", line
+        out.append((reg, url.strip()))
     return out
 
 
@@ -189,7 +202,7 @@ def main():
     links = read_links()
     added = upgraded = 0
     done_urls = {p.get("productUrl") for p in products.values()}
-    for url in links:
+    for region, url in links:
         if url in done_urls:
             continue
         # для onelink настоящий id узнаём только со страницы, поэтому сначала пробный ключ
@@ -208,11 +221,16 @@ def main():
 
             # Товар уже есть (собран закладкой) → это апгрейд до партнёрской ссылки
             if pid in products:
+                item = products[pid]
+                regions = set(item.get("regions") or [item.get("region", "US")])
+                regions.add(region)
+                item["regions"] = sorted(regions)
                 if "onelink.shein.com" in url:
-                    products[pid]["productUrl"] = url
+                    item["productUrl"] = url
+                    item.setdefault("productUrlByRegion", {})[region] = url
                     upgraded += 1
-                    print(f"↑ {pid}  партнёрская ссылка  {products[pid]['name'][:38]}")
-                    done_urls.add(url)
+                    print(f"↑ {pid}  партнёрская ссылка [{region}]  {item['name'][:34]}")
+                done_urls.add(url)
                 continue
 
             img = bigger(img)
@@ -226,13 +244,16 @@ def main():
                 "name": name[:80],
                 "category": cat,
                 "garmentRef": img,          # фото вещи (для этапа примерки)
-                "productUrl": url,          # партнёрская ссылка «Открыть в магазине»
+                "productUrl": url,          # ссылка «Открыть в магазине»
+                "productUrlByRegion": {region: url},
+                "regions": [region],        # где товар доступен: US / EU
+                "gender": "FEMALE",         # TODO уточняется на этапе атрибутов
                 "store": "SHEIN",
                 # imageUrl / overlayUrl проставятся после этапа 2 (примерка)
             }
             done_urls.add(url)
             added += 1
-            print(f"+ {pid}  [{cat}]  {name[:50]}")
+            print(f"+ {pid}  [{cat}][{region}]  {name[:44]}")
             time.sleep(0.3)
         except Exception as e:
             print("ERR", url, e)
