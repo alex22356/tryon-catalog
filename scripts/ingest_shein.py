@@ -34,6 +34,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LINKS = os.path.join(HERE, "shein_links.txt")
 OUT_JSON = os.path.join(HERE, "shein_products.json")
 GARMENTS = os.path.join(HERE, "garments")
+EARN_DATA = os.path.join(HERE, "earn_data.json")
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 # ВАЖНО: без Accept CDN отдаёт AVIF (Ollama и часть Android их не читают).
 IMG_HEADERS = {**UA, "Accept": "image/jpeg,image/png;q=0.9,*/*;q=0.1"}
@@ -163,6 +164,36 @@ def read_links():
     return out
 
 
+def load_earn():
+    """Цена / популярность / название из кнопки «Earn» affiliate-кабинета."""
+    if not os.path.exists(EARN_DATA):
+        return {}
+    try:
+        with open(EARN_DATA, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def apply_earn(item, info):
+    """Переносит в товар то, что мы иначе получить не можем: цену и продажи."""
+    if not info:
+        return item
+    if info.get("price"):
+        item["price"] = info["price"]
+        item["currency"] = info.get("currency", "USD")
+        item["approx"] = False
+    if info.get("discount"):
+        item["discount"] = info["discount"]
+    if info.get("sold"):
+        item["sold"] = info["sold"]          # сигнал популярности
+    # название из Earn лучше маркетингового og:title
+    nm = (info.get("name") or "").strip()
+    if nm and len(nm) > 20 and any(k in (item.get("name") or "").lower() for k in GENERIC_TITLE):
+        item["name"] = nm[:80]
+    return item
+
+
 def load_products():
     if not os.path.exists(OUT_JSON):
         return {}
@@ -223,6 +254,7 @@ def main():
             products[p["id"]] = p
 
     links = read_links()
+    earn = load_earn()
     added = upgraded = 0
     done_urls = {p.get("productUrl") for p in products.values()}
     for region, url in links:
@@ -248,6 +280,7 @@ def main():
                 regions = set(item.get("regions") or [item.get("region", "US")])
                 regions.add(region)
                 item["regions"] = sorted(regions)
+                apply_earn(item, earn.get(url))
                 if "onelink.shein.com" in url:
                     item["productUrl"] = url
                     item.setdefault("productUrlByRegion", {})[region] = url
@@ -275,6 +308,7 @@ def main():
                 "store": "SHEIN",
                 # imageUrl / overlayUrl проставятся после этапа 2 (примерка)
             }
+            apply_earn(products[pid], earn.get(url))
             done_urls.add(url)
             added += 1
             print(f"+ {pid}  [{cat}][{region}]  {name[:44]}")

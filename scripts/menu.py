@@ -38,6 +38,12 @@ CATEGORIES = [
     "https://us.shein.com/Women-Shoes-c-1745.html",
 ]
 
+# affiliate-кабинет: ходишь по каталогу и жмёшь «Earn» — ссылка с ценой падает в буфер
+AFFILIATE = {
+    "US": "https://m.shein.com/us/affiliate/?cdn_rsite=cf&ref=m&rep=dir&ret=mus",
+    "EU": "https://m.shein.com/eur/affiliate/?cdn_rsite=cf&ref=m&rep=dir",
+}
+
 
 def run(script, *args):
     return subprocess.run([sys.executable, os.path.join(SCRIPTS, script), *args], cwd=HERE)
@@ -142,11 +148,25 @@ def head(t):
     print("=" * 60)
 
 
+def act_earn():
+    """Основной способ: affiliate-кабинет + ловец буфера в одном действии."""
+    head("1 · Собираю товары из affiliate-кабинета")
+    print("Регион:  1 — US    2 — EU")
+    region = {"1": "US", "2": "EU"}.get(input("Регион [1/2, Enter=US]: ").strip(), "US")
+    print(f"\nОткрываю кабинет SHEIN ({region}).")
+    print("Ходи по каталогу и жми «Earn» на нужных товарах —")
+    print("ссылку, название, ЦЕНУ и число продаж я подхвачу сам.")
+    print("Закончил — вернись сюда и нажми Ctrl+C.\n")
+    webbrowser.open(AFFILIATE[region])
+    time.sleep(2)
+    run("catch_links.py", "--region", region)
+
+
 def act_grab():
-    head("1 · Собрать товары")
-    print("Открываю инструкцию и категорию SHEIN в браузере.")
-    print("Там: прокрути страницу вниз → нажми закладку «Собрать товары SHEIN».")
-    print("Потом вернись сюда и нажми 2.")
+    head("Собрать пачкой закладкой (без цен)")
+    print("Открываю инструкцию и категорию SHEIN.")
+    print("Прокрути страницу → нажми закладку «Собрать товары SHEIN» → потом пункт 2.")
+    print("Так быстрее (десятки товаров за раз), но БЕЗ цен и без партнёрских ссылок.")
     if os.path.exists(GRABBER):
         webbrowser.open("file:///" + GRABBER.replace("\\", "/"))
     time.sleep(1)
@@ -204,12 +224,12 @@ MENU = """
              КАТАЛОГ ПРИМЕРОЧНОЙ
 ============================================================
 
-  1  Собрать товары    открыть SHEIN (там жмёшь закладку)
-  2  Обновить каталог  забрать из буфера и разобрать
+  1  СОБИРАТЬ ТОВАРЫ   кабинет SHEIN + ловлю «Earn» (с ценами)
+  2  Обновить каталог  разобрать пойманное
   3  Примерка          одеть модель в новые вещи
   4  Выложить всем     опубликовать клиентам
 
-  5  Ловить ссылки     копируешь в браузере — я сам подхватываю
+  5  Собрать пачкой    закладкой с категории (быстро, без цен)
   6  Разметить ИИ      пол, цвет, стиль, сезон (локальный ИИ)
 
   9  Всё сразу (2 → 6 → 3 → 4)
@@ -218,8 +238,8 @@ MENU = """
 
 
 def main():
-    actions = {"1": act_grab, "2": act_update, "3": act_tryon, "4": act_deploy,
-                   "5": act_catch, "6": act_enrich, "9": act_all}
+    actions = {"1": act_earn, "2": act_update, "3": act_tryon, "4": act_deploy,
+               "5": act_grab, "6": act_enrich, "9": act_all}
     while True:
         print(MENU)
         try:

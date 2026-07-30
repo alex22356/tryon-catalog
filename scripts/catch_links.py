@@ -29,6 +29,25 @@ except Exception:
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LINKS = os.path.join(HERE, "shein_links.txt")
+EARN = os.path.join(HERE, "earn_data.json")   # цена/популярность из кнопки «Earn»
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from parse_earn import parse_earn
+
+
+def load_earn():
+    import json
+    if os.path.exists(EARN):
+        try:
+            return json.load(io.open(EARN, encoding="utf-8"))
+        except Exception:
+            return {}
+    return {}
+
+
+def save_earn(d):
+    import json
+    json.dump(d, io.open(EARN, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 
 RE_LINK = re.compile(r"https://(?:onelink\.shein\.com/\S+|[a-z0-9.]*shein\.com/[^\s\"'<>]*?-p-\d+\.html)")
 POLL = 0.8          # как часто смотреть в буфер, сек
@@ -88,6 +107,7 @@ def main():
     print("Копируй ссылки в браузере — я подхвачу каждую сам.")
     print("Закончил — нажми Ctrl+C.\n")
 
+    earn = load_earn()
     last = ""
     caught = 0
     try:
@@ -95,21 +115,45 @@ def main():
             text = clipboard()
             if text and text != last:
                 last = text
+
+                # Кнопка «Earn» кладёт не только ссылку, но и цену/название/продажи
+                info = parse_earn(text)
+
                 for raw in RE_LINK.findall(text):
                     url = clean(raw)
                     k = key_of(url)
                     if k in keys:
-                        print(f"  · уже есть: {url[:62]}")
+                        print(f"  · уже есть: {url[:58]}")
                         continue
                     keys.add(k)
                     with io.open(LINKS, "a", encoding="utf-8") as f:
                         f.write(f"{region}|{url}\n")
                     caught += 1
+
+                    extra = ""
+                    if info and info.get("url", "").split("?")[0] == url:
+                        rec = {kk: vv for kk, vv in info.items() if kk != "url"}
+                        rec["region"] = region
+                        earn[url] = rec
+                        save_earn(earn)
+                        bits = []
+                        if rec.get("price"):
+                            bits.append(f"{rec['price']} {rec.get('currency','')}")
+                        if rec.get("discount"):
+                            bits.append(f"-{rec['discount']}%")
+                        if rec.get("sold"):
+                            bits.append(f"{rec['sold']}+ продано")
+                        extra = "  " + " · ".join(bits) if bits else ""
+
                     aff = "партнёрская" if "onelink" in url else "обычная"
-                    print(f"  ✓ [{caught}] {aff}: {url[:58]}")
+                    print(f"  ✓ [{caught}] {aff}{extra}")
+                    if info and info.get("name"):
+                        print(f"        {info['name'][:66]}")
             time.sleep(POLL)
     except KeyboardInterrupt:
-        print(f"\nПоймано новых ссылок: {caught}   (регион {region})")
+        with_price = sum(1 for v in earn.values() if v.get("price"))
+        print(f"\nПоймано новых: {caught}   (регион {region})")
+        print(f"С ценой и популярностью: {with_price}")
         if caught:
             print("Дальше: пункт «Обновить каталог»")
 
