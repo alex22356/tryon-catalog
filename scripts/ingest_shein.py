@@ -46,7 +46,12 @@ CATEGORY_RULES = [
 
 
 def code_of(url: str) -> str:
-    m = re.search(r"/([0-9a-z]+)(?:\?|$)", url.strip())
+    """ID товара. Для прямых ссылок — настоящий goods_id, для onelink — его код."""
+    url = url.strip()
+    m = re.search(r"-p-(\d+)\.html", url)       # https://us.shein.com/...-p-482098838.html
+    if m:
+        return m.group(1)
+    m = re.search(r"/([0-9a-z]+)(?:\?|$)", url)  # https://onelink.shein.com/45/5x4po236q8lx
     return m.group(1) if m else re.sub(r"\W+", "", url)[-12:]
 
 
@@ -84,6 +89,59 @@ def read_links():
         if line and not line.startswith("#"):
             out.append(line)
     return out
+
+
+def load_products():
+    if not os.path.exists(OUT_JSON):
+        return {}
+    return {p["id"]: p for p in json.load(open(OUT_JSON, encoding="utf-8"))}
+
+
+def save_products(products):
+    json.dump(list(products.values()), open(OUT_JSON, "w", encoding="utf-8"),
+              ensure_ascii=False, indent=2)
+
+
+def ingest_extracted(records):
+    """
+    Товары, данные которых УЖЕ сняты со страницы в браузере
+    (закладка «Собрать товары»): [{id, name, img, url}].
+    Никаких запросов к страницам SHEIN — качаем только фото с их CDN.
+    """
+    os.makedirs(GARMENTS, exist_ok=True)
+    products = load_products()
+    added = 0
+    for r in records:
+        gid = str(r.get("id") or "").strip()
+        name = clean(str(r.get("name") or ""))
+        img = str(r.get("img") or "").strip()
+        if not (gid and name and img):
+            continue
+        pid = "shein_" + gid
+        if pid in products:
+            continue
+        img = bigger(img)
+        cat = categorize(name)
+        try:
+            data = requests.get(img, headers=UA, timeout=25).content
+            if len(data) < 2000:
+                raise ValueError("слишком маленький файл")
+            open(os.path.join(GARMENTS, pid + ".jpg"), "wb").write(data)
+        except Exception as e:
+            print(f"  ! фото не скачалось {pid}: {str(e)[:50]}")
+            continue
+        products[pid] = {
+            "id": pid,
+            "name": name[:80],
+            "category": cat,
+            "garmentRef": img,
+            "productUrl": r.get("url") or f"https://us.shein.com/-p-{gid}.html",
+            "store": "SHEIN",
+        }
+        added += 1
+        print(f"+ {pid}  [{cat}]  {name[:46]}")
+    save_products(products)
+    return added
 
 
 def main():

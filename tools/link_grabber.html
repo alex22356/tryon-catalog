@@ -1,40 +1,51 @@
 <!doctype html>
 <meta charset="utf-8">
-<title>Граббер ссылок SHEIN → shein_links.txt</title>
+<title>Сбор товаров SHEIN</title>
 <style>
-  body{font:15px/1.6 system-ui,Segoe UI,sans-serif;max-width:760px;margin:40px auto;padding:0 20px;
+  body{font:15px/1.65 system-ui,Segoe UI,sans-serif;max-width:780px;margin:36px auto;padding:0 20px;
        background:#0f1418;color:#e8eef2}
-  h1{font-size:1.5rem;letter-spacing:-.01em}
-  h2{font-size:1.05rem;margin-top:1.8em}
+  h1{font-size:1.5rem;letter-spacing:-.01em;margin-bottom:.2em}
+  h2{font-size:1.05rem;margin-top:1.7em}
+  .sub{color:#9dabb6;margin-top:0}
   code,pre{font-family:ui-monospace,Consolas,monospace}
-  pre{background:#18212a;border:1px solid #26333d;border-radius:10px;padding:14px;overflow-x:auto;font-size:.82rem}
+  pre{background:#18212a;border:1px solid #26333d;border-radius:10px;padding:14px;
+      overflow-x:auto;font-size:.78rem;white-space:pre-wrap;word-break:break-all}
   .bm{display:inline-block;background:#2dd4bf;color:#08120f;font-weight:700;text-decoration:none;
-      padding:10px 18px;border-radius:10px;margin:8px 0}
-  .note{background:#1b2a2f;border-left:3px solid #2dd4bf;padding:10px 14px;border-radius:8px;font-size:.9rem}
-  ol{padding-left:22px} li{margin:.4em 0}
+      padding:11px 20px;border-radius:10px;margin:10px 0;font-size:1rem}
+  .note{background:#1b2a2f;border-left:3px solid #2dd4bf;padding:11px 15px;border-radius:8px;font-size:.9rem}
+  .warn{background:#2b2418;border-left:3px solid #f0a63a;padding:11px 15px;border-radius:8px;font-size:.9rem}
+  ol{padding-left:22px} li{margin:.45em 0}
+  a{color:#2dd4bf}
 </style>
 
-<h1>Граббер ссылок SHEIN</h1>
-<p>Собирает ссылки на товары со страницы, которую <b>ты сам открыл в браузере</b>, и кладёт их в буфер обмена — чтобы не копировать по одной. Никаких автоматических запросов не делает.</p>
+<h1>Сбор товаров SHEIN</h1>
+<p class="sub">Снимает товары со страницы, которую <b>ты открыл сам</b>: ссылку, название и фото.
+Никаких автоматических запросов — только то, что уже отрисовано у тебя на экране.</p>
 
-<h2>Способ 1 — консоль (проще всего)</h2>
+<h2>Настройка — один раз</h2>
 <ol>
-  <li>Открой в браузере нужную категорию SHEIN и <b>прокрути вниз</b> — сколько прокрутишь, столько товаров и загрузится.</li>
-  <li>Нажми <code>F12</code> → вкладка <b>Console</b>.</li>
-  <li>Вставь код ниже, нажми Enter.</li>
-  <li>Ссылки скопируются в буфер → вставь их в <code>shein_links.txt</code>.</li>
+  <li>Покажи панель закладок: <code>Ctrl+Shift+B</code></li>
+  <li>Перетащи на неё зелёную кнопку ниже 👇</li>
 </ol>
-<pre id="snippet">(()=>{const s=new Set();document.querySelectorAll('a[href*="-p-"]').forEach(a=>{const m=a.href.match(/^(https:\/\/[^?#]*?-p-\d+\.html)/);if(m)s.add(m[1])});const t=[...s].join('\n');if(!t){alert('Ссылок не найдено — прокрути страницу и повтори');return}copy(t);console.log('Скопировано ссылок: '+s.size);alert('Скопировано ссылок: '+s.size+'\n\nВставь в shein_links.txt')})()</pre>
-<p class="note">В консоли Chrome работает встроенная функция <code>copy()</code> — поэтому этот вариант самый надёжный.</p>
+<a class="bm" href="javascript:(function(){var s=new Set(),out=[];document.querySelectorAll('a[href*=%22-p-%22]').forEach(function(a){var m=a.href.match(/-p-(\d+)\.html/);if(!m||s.has(m[1]))return;var card=a.closest('section,li,div[class*=%22product%22],div[class*=%22item%22]')||a.parentElement;var img=card?card.querySelector('img'):null;var src=img?(img.src||img.getAttribute('data-src')||img.getAttribute('data-before-crop-src')):null;var nm=(a.getAttribute('aria-label')||a.title||(img&&img.alt)||a.innerText||'').trim();if(!src||!nm)return;s.add(m[1]);out.push({id:m[1],name:nm.slice(0,90),img:src,url:a.href.split('?')[0]})});if(!out.length){alert('Товаров не найдено. Прокрути страницу и нажми снова.');return}var t=JSON.stringify(out);function done(){alert('Собрано товаров: '+out.length+'\n\nТеперь в окне каталога нажми 2')}navigator.clipboard.writeText(t).then(done,function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();done()})})();">🛍️ Собрать товары SHEIN</a>
 
-<h2>Способ 2 — закладка (один клик)</h2>
-<p>Перетащи кнопку на панель закладок. Потом на любой странице SHEIN жми её.</p>
-<a class="bm" href="javascript:(()=>{const s=new Set();document.querySelectorAll('a[href*=%22-p-%22]').forEach(a=>{const m=a.href.match(/^(https:\/\/[^?%23]*?-p-\d+\.html)/);if(m)s.add(m[1])});const t=[...s].join('\n');if(!t){alert('Ссылок не найдено — прокрути страницу и повтори');return}navigator.clipboard.writeText(t).then(()=>alert('Скопировано ссылок: '+s.size+'\n\nВставь в shein_links.txt'),()=>{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();alert('Скопировано ссылок: '+s.size)})})();">📋 Собрать ссылки SHEIN</a>
+<h2>Как пользоваться</h2>
+<ol>
+  <li>Открой любую категорию SHEIN (женская одежда, платья, обувь…).</li>
+  <li><b>Прокрути вниз</b> — сколько прокрутил, столько товаров и загрузилось.
+      Обычно 20–60 за раз.</li>
+  <li>Нажми закладку <b>«Собрать товары SHEIN»</b> → появится «Собрано товаров: N».</li>
+  <li>Вернись в окно каталога и нажми <b>2</b>. Дальше всё само.</li>
+</ol>
+<div class="note">Повторные товары отсеиваются автоматически — можно собирать одну и ту же
+категорию хоть каждый день, добавится только новое.</div>
 
-<h2>Дальше — всё само</h2>
-<pre>cd catalog-repo
-python scripts/run_pipeline.py</pre>
-<p>Один этот запуск: разберёт новые ссылки (имя, фото, категория через локальный ИИ), опубликует готовые примерки в приложение и покажет, что осталось примерить.</p>
+<h2>Если закладка не ставится</h2>
+<p>Открой на странице SHEIN консоль (<code>F12</code> → Console), вставь это и нажми Enter:</p>
+<pre>var s=new Set(),out=[];document.querySelectorAll('a[href*="-p-"]').forEach(function(a){var m=a.href.match(/-p-(\d+)\.html/);if(!m||s.has(m[1]))return;var card=a.closest('section,li,div[class*="product"],div[class*="item"]')||a.parentElement;var img=card?card.querySelector('img'):null;var src=img?(img.src||img.getAttribute('data-src')||img.getAttribute('data-before-crop-src')):null;var nm=(a.getAttribute('aria-label')||a.title||(img&&img.alt)||a.innerText||'').trim();if(!src||!nm)return;s.add(m[1]);out.push({id:m[1],name:nm.slice(0,90),img:src,url:a.href.split('?')[0]})});copy(JSON.stringify(out));console.log('Собрано: '+out.length)</pre>
 
-<h2>Когда одобрят фид Awin</h2>
-<p>Вставишь ссылку на датафид в <code>feeds.json</code> (<code>SHEIN (Awin)</code>, <code>enabled: true</code>) — и граббер больше не нужен: товары, цены, наличие и партнёрские ссылки будут подтягиваться сами.</p>
+<h2>Про партнёрские ссылки</h2>
+<div class="warn">Собранные ссылки — <b>обычные</b>, комиссия по ним не идёт. Товары в каталоге
+появятся и будут работать, но для заработка ссылку нужно заменить на партнёрскую
+(<b>Convert Link</b> в кабинете SHEIN) — либо дождаться фида Awin, где партнёрские ссылки
+приходят сразу для всех товаров.</div>
