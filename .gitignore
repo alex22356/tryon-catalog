@@ -10,5 +10,6 @@ tryon_out/
 
 # Локальные секреты/настройки и мусор
 .chrome_profile/
+feed_url.txt
 __pycache__/
 *.pyc
