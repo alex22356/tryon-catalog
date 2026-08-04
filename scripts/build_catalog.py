@@ -167,17 +167,24 @@ def main():
     log(f"ручных товаров: {len(curated)}")
 
     # 3. DV8 Fashion (Awin Feed)
+    dv8_path = os.path.join(ROOT, "dv8_products.json")
     try:
         sys.path.insert(0, os.path.dirname(__file__))
         import ingest_awin
         dv8_items = ingest_awin.ingest()
-        # Сохраняем промежуточный результат для контроля
-        dv8_path = os.path.join(ROOT, "dv8_products.json")
-        with open(dv8_path, "w", encoding="utf-8") as f:
-            json.dump(dv8_items, f, ensure_ascii=False, indent=2)
+        if dv8_items:
+            # Сохраняем свежий результат
+            with open(dv8_path, "w", encoding="utf-8") as f:
+                json.dump(dv8_items, f, ensure_ascii=False, indent=2)
+            log(f"DV8: получено {len(dv8_items)} свежих товаров")
+        else:
+            # Если фид недоступен (например, в CI без секретов) — берем кэш из репозитория
+            dv8_items = read_json(dv8_path, [])
+            log(f"DV8: фид пуст, загружено {len(dv8_items)} из локального кэша")
     except Exception as exc:
         log(f"ОШИБКА DV8: {exc}")
-        dv8_items = []
+        dv8_items = read_json(dv8_path, [])
+        log(f"DV8 (fallback): загружено {len(dv8_items)} из локального кэша")
 
     feed_items = load_feeds(feeds_raw.get("feeds", []))
 
