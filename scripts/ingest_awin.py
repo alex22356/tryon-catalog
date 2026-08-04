@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Модуль для импорта товарного фида Awin (DV8 Fashion).
-Скачивает CSV фид, группирует варианты (размеры) в уникальные товары,
-фильтрует по наличию и скидке, мапит категории.
+Модуль для импорта обновленного товарного фида Awin (DV8 Fashion).
+Реализует глубокую фильтрацию, детекцию пола по 4 уровням и управление стоком размеров.
 """
 
 import os
@@ -20,57 +19,145 @@ MIN_DISCOUNT = 40
 MIN_SEARCH_PRICE = 0.01
 SOURCE_NAME = "DV8 Fashion"
 
-# Маппинг категорий (ключевые слова в merchant_category)
-CAT_RULES = {
-    "TOP": ["T-shirt", "Top", "Shirt", "Sweatshirt", "Hoodie", "Jumper", "Blouse", "Polo", "Jacket", "Coat"],
-    "BOTTOM": ["Jean", "Trouser", "Short", "Skirt", "Legging", "Chino", "Jogger"],
-    "FULL_BODY": ["Dress", "Jumpsuit", "Playsuit"],
-    "FOOTWEAR": ["Trainer", "Shoe", "Boot", "Sandal", "Heel", "Sneaker"]
+# Категории-исключения (нельзя надеть на манекен)
+EXCLUDED_CATEGORY_NAMES = {
+    "Clothing Accessories", "Bags", "Women's Jewellery", "Lingerie",
+    "Men's Underwear", "Men's Accessories", "Gifts", "Glassware"
 }
+
+# Маппинг категорий (ТОЧНОЕ совпадение merchant_category)
+CAT_MAP = {
+    "FULL_BODY": [
+        "Pyjamas", "Body Suits", "Jumpsuits", "Playsuits",
+        "Short Dresses", "Long Dresses", "Midi Dresses"
+    ],
+    "BOTTOM": [
+        "Straight Jeans", "Skinny Jeans", "Loose Jeans", "Wide Leg Jeans",
+        "Flare Jeans", "Bootcut Jeans", "Mom Jeans", "Plain Trousers",
+        "Patterned Trousers", "Cargo Trousers", "Cuffed Joggers",
+        "Open Hem Joggers", "Sport Leggings", "Maxi Skirts", "Midi Skirts",
+        "Short Skirts", "Mini Skirt", "Denim Shorts", "Fashion Shorts",
+        "Cargo Shorts", "Sport Shorts", "Beach Shorts"
+    ],
+    "FOOTWEAR": [
+        "Laced Trainers", "Slip On Trainers", "Laced Shoes", "Slip On Shoes",
+        "Laced Boots", "Knee High Boots", "Thigh High Boots", "Heels", "Sandals"
+    ],
+    "TOP": [
+        "T-shirt", "Top", "Shirt", "Sweatshirt", "Hoodie", "Jumper", "Blouse",
+        "Polo", "Jacket", "Coat", "Cardigan", "Vest", "Gilet", "Blazer",
+        "Shacket", "Waistcoat", "Waistcoats"
+    ]
+}
+
+# Признаки пола для нейтральных категорий
+FEMALE_CATEGORIES = {
+    "Heels", "Knee High Boots", "Thigh High Boots", "Maxi Skirts", "Midi Skirts",
+    "Short Skirts", "Mini Skirt", "Short Dresses", "Long Dresses", "Midi Dresses",
+    "Playsuits", "Jumpsuits", "Body Suits", "Cami Tops", "Strapless Tops", "Sport Leggings"
+}
+MALE_CATEGORIES = {"Waistcoat", "Ties", "Dress Shirts", "Boxers", "Briefs"}
+
+FEMALE_BRANDS = {
+    "only", "veromoda", "pieces", "tally weijl", "noisy may", "kaiia", "jdy",
+    "jjxx", "daisy street", "public desire", "girl in mind", "ax paris", "vila", "saint genies"
+}
+MALE_BRANDS = {"jack & jones", "only & sons", "selected homme", "capo"}
+
+CLOTHING_ORDER = ["2XS", "XS", "S", "M", "L", "XL", "2XL", "3XL"]
 
 def log(msg):
     print(f"[ingest_awin] {msg}", flush=True)
 
-def get_product_page_id(merchant_deep_link):
-    """Извлекает числовой ID из ссылки вида ...m-12345.aspx"""
-    match = re.search(r"m-(\d+)\.aspx", merchant_deep_link)
-    if match:
-        return match.group(1)
-    return None
+def normalize_color(color):
+    if not color: return "NA"
+    c = color.lower()
+    if "navy" in c: return "Blue"
+    if any(x in c for x in ["stone", "sand", "camel"]): return "Beige"
+    if any(x in c for x in ["cream", "ivory"]): return "White"
+    if "charcoal" in c: return "Grey"
+    return color.capitalize()
 
-def map_category(merchant_cat):
-    """Определяет категорию приложения на основе ключевых слов в merchant_category."""
-    cat_str = merchant_cat.lower()
-    for app_cat, keywords in CAT_RULES.items():
-        for kw in keywords:
-            if kw.lower() in cat_str:
-                return app_cat
-    return None
+def get_size_info(sizes):
+    if not sizes: return "unknown", None
+    if all(s.upper() == "ONE" for s in sizes): return "one", None
 
-def detect_gender(name, brand, category, path):
-    """Определяет пол по названию, бренду или категориям."""
-    # Источник сигнала: Name + Brand + Category + Path (все в нижнем регистре)
-    text = f"{name} {brand} {category} {path}".lower()
+    # 1. Waist (28R, 30S...)
+    if any(re.search(r"^\d+[RSL]$", s, re.I) for s in sizes):
+        return "waist", None
 
-    # 1. ЖЕНСКИЕ признаки (проверяем ПЕРВЫМИ, так как womens содержит mens)
-    # Используем word boundaries \b. Учитываем также Women's/Men's.
-    female_pattern = r"\b(women|woman|womens|ladies|lady|girls|girl|female)\b"
-    if re.search(female_pattern, text) or "women's" in text or "woman's" in text or "lady's" in text:
-        return "female"
+    # 2. Clothing (XS, M...)
+    if any(s.upper() in CLOTHING_ORDER for s in sizes):
+        return "clothing", None
 
-    # 2. МУЖСКИЕ признаки
-    male_pattern = r"\b(men|man|mens|boys|boy|male|gents|gent)\b"
-    if re.search(male_pattern, text) or "men's" in text or "man's" in text or "boy's" in text:
-        return "male"
+    # 3. Numeric (Shoes or UK)
+    try:
+        nums = []
+        for s in sizes:
+            m = re.search(r"(\d+)", s)
+            if m: nums.append(int(m.group(1)))
 
-    return "unisex"
+        if nums:
+            mx = max(nums)
+            if mx <= 15:
+                # Проверка на UK Numeric (чётные 4-24)
+                if all(n % 2 == 0 and 4 <= n <= 24 for n in nums):
+                    return "uk_numeric", None
+                return "shoe_uk", "UK"
+            if mx >= 36:
+                return "shoe_eu", "EU"
+    except: pass
 
-def clean_name_and_get_size(product_name):
-    """Извлекает размер (после ' - ') и возвращает чистое имя."""
-    if " - " in product_name:
-        parts = product_name.rsplit(" - ", 1)
-        return parts[0].strip(), parts[1].strip()
-    return product_name.strip(), ""
+    return "unknown", None
+
+def sort_sizes(sizes, size_type):
+    if size_type == "clothing":
+        return sorted(list(sizes), key=lambda x: CLOTHING_ORDER.index(x.upper()) if x.upper() in CLOTHING_ORDER else 99)
+    if size_type in ["shoe_uk", "shoe_eu", "uk_numeric"]:
+        return sorted(list(sizes), key=lambda x: float(re.search(r"(\d+\.?\d*)", x).group(1)) if re.search(r"\d", x) else 999)
+    return sorted(list(sizes))
+
+def detect_gender(row, sizes, app_cat):
+    cat_name = row.get("category_name", "")
+    name = row.get("product_name", "").lower()
+    brand = row.get("brand_name", "").lower()
+    merchant_cat = row.get("merchant_category", "")
+
+    # a) Достоверно из category_name
+    if cat_name.startswith("Women"): return "female", "category_name"
+    if cat_name.startswith("Men"): return "male", "category_name"
+
+    # b) Эвристики для нейтральных (General Clothing, Shoes...)
+    # 1. По имени
+    if re.search(r"\b(women|woman|womens|ladies|lady|girls|girl|female)\b", name): return "female", "name"
+    if re.search(r"\b(men|man|mens|boys|boy|male|gents|gent)\b", name): return "male", "name"
+
+    # 2. Обувь по размеру
+    if cat_name == "Shoes" or app_cat == "FOOTWEAR":
+        nums = [float(m.group(1)) for s in sizes for m in [re.search(r"(\d+\.?\d*)", s)] if m]
+        if nums:
+            mx = max(nums)
+            if mx <= 15: # UK
+                if mx <= 8: return "female", "shoe_size"
+                if mx >= 9: return "male", "shoe_size"
+            elif mx >= 36: # EU
+                if mx <= 41: return "female", "shoe_size"
+                if mx >= 44: return "male", "shoe_size"
+
+    # 3. По категории
+    if merchant_cat in FEMALE_CATEGORIES: return "female", "category"
+    if merchant_cat in MALE_CATEGORIES: return "male", "category"
+
+    # 4. По бренду
+    if brand in FEMALE_BRANDS: return "female", "brand"
+    if brand in MALE_BRANDS: return "male", "brand"
+
+    # 5. По сетке размеров
+    stype, _ = get_size_info(sizes)
+    if stype == "uk_numeric": return "female", "size_system"
+    if stype == "waist": return "male", "size_system"
+
+    return "unisex", "none"
 
 def ingest():
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -79,142 +166,148 @@ def ingest():
     feed_url = ""
     if os.path.exists(url_file):
         with open(url_file, "r") as f:
-            feed_url = f.read().strip()
-
+            content = f.read()
+            match = re.search(r"(https?://\S+)", content)
+            if match: feed_url = match.group(1).strip()
     if not feed_url:
         feed_url = os.environ.get("AWIN_DV8_FEED_URL")
-
     if not feed_url:
-        log("ОШИБКА: URL фида не найден в feed_url.txt или переменной окружения")
+        log("ОШИБКА: URL фида не найден")
         return []
 
-    log(f"Скачиваю фид: {feed_url[:60]}...")
+    log("Загрузка фида...")
     try:
         req = urllib.request.Request(feed_url, headers={"User-Agent": "tryon-catalog/1.0"})
         with urllib.request.urlopen(req, timeout=120) as resp:
             compressed_data = resp.read()
-
         with gzip.GzipFile(fileobj=io.BytesIO(compressed_data)) as f:
             csv_text = f.read().decode("utf-8", errors="replace")
     except Exception as e:
-        log(f"ОШИБКА при загрузке/распаковке: {e}")
+        log(f"ОШИБКА: {e}")
         return []
 
     reader = csv.DictReader(io.StringIO(csv_text), delimiter="|")
 
     rows_count = 0
-    products_map = {}
-    skipped_cat = 0
-    skipped_price = 0
-    skipped_stock = 0
-    skipped_discount = 0
+    raw_products = {} # key -> list of rows
 
     for row in reader:
         rows_count += 1
+        link = row.get("merchant_deep_link", "")
+        match = re.search(r"m-(\d+)\.aspx", link)
+        page_id = match.group(1) if match else None
+        key = page_id if page_id else row.get("merchant_image_url")
+        if not key: continue
 
-        # 1. Базовые фильтры
-        if row.get("in_stock") != "1":
-            skipped_stock += 1
-            continue
+        if key not in raw_products: raw_products[key] = []
+        raw_products[key].append(row)
 
-        try:
-            price = float(row.get("search_price", 0))
-            rrp = float(row.get("rrp_price", 0))
-        except (ValueError, TypeError):
-            skipped_price += 1
-            continue
-
-        if price < MIN_SEARCH_PRICE:
-            skipped_price += 1
-            continue
-
-        # Скидка
-        discount_pct = 0
-        if rrp > price:
-            discount_pct = int(round((rrp - price) / rrp * 100))
-
-        if rrp <= price or discount_pct < MIN_DISCOUNT:
-            skipped_discount += 1
-            continue
-
-        # 2. Определение категории
-        app_cat = map_category(row.get("merchant_category", ""))
-        if not app_cat:
-            skipped_cat += 1
-            continue
-
-        # 3. Группировка
-        # ID страницы товара - основной ключ группировки
-        page_id = get_product_page_id(row.get("merchant_deep_link", ""))
-        group_key = page_id if page_id else row.get("merchant_image_url")
-
-        if not group_key:
-            continue
-
-        name, size = clean_name_and_get_size(row.get("product_name", ""))
-
-        if group_key not in products_map:
-            products_map[group_key] = {
-                "id": f"dv8_{page_id}" if page_id else f"dv8_{hash(group_key)}",
-                "name": name,
-                "price": price,
-                "rrpPrice": rrp,
-                "discountPct": discount_pct,
-                "category": app_cat,
-                "imageUrl": row.get("merchant_image_url"),
-                "productUrl": row.get("aw_deep_link"),
-                "store": row.get("merchant_name", SOURCE_NAME),
-                "brand": row.get("brand_name"),
-                "colour": row.get("colour"),
-                "currency": row.get("currency"),
-                "sizes": set(),
-                "gender": detect_gender(row.get("product_name", ""), row.get("brand_name", ""), row.get("merchant_category", ""), row.get("merchant_product_category_path", "")),
-                "inStock": True,
-                "fitDx": 0.0,
-                "fitDy": 0.0,
-                "fitScale": 1.0,
-                "preCut": False
-            }
-
-        if size:
-            products_map[group_key]["sizes"].add(size)
-
-    # Приводим к финальному списку и сортируем размеры
     final_items = []
+    stats = {
+        "rows": rows_count, "unique": len(raw_products),
+        "skipped_excluded_cat": 0, "skipped_discount": 0, "skipped_no_stock": 0, "skipped_no_cat": 0,
+        "cat_counts": {"TOP":0, "BOTTOM":0, "FULL_BODY":0, "FOOTWEAR":0},
+        "gender_counts": {"female":0, "male":0, "unisex":0},
+        "gender_source": {"category_name":0, "name":0, "shoe_size":0, "category":0, "brand":0, "size_system":0, "none":0},
+        "size_types": {}, "colors": {}
+    }
+
     total_discount = 0
-    cat_stats = {"TOP": 0, "BOTTOM": 0, "FULL_BODY": 0, "FOOTWEAR": 0}
-    gender_stats = {"female": 0, "male": 0, "unisex": 0}
 
-    for p in products_map.values():
-        p["sizes"] = sorted(list(p["sizes"]))
-        final_items.append(p)
-        total_discount += p["discountPct"]
-        cat_stats[p["category"]] += 1
-        gender_stats[p["gender"]] += 1
+    for key, variants in raw_products.items():
+        base = variants[0]
 
-    # Статистика
+        # 1. Отсев мусора
+        if base.get("category_name") in EXCLUDED_CATEGORY_NAMES:
+            stats["skipped_excluded_cat"] += 1
+            continue
+
+        # 2. Фильтр размеров (только те, что в наличии)
+        available_variants = [v for v in variants if int(v.get("size_stock_amount", 0)) > 0]
+        if not available_variants:
+            stats["skipped_no_stock"] += 1
+            continue
+
+        # 3. Категория приложения
+        merchant_cat = base.get("merchant_category", "")
+        app_cat = None
+        for ac, mlist in CAT_MAP.items():
+            if merchant_cat in mlist:
+                app_cat = ac; break
+
+        if not app_cat:
+            top_keywords = ["T-shirt", "Top", "Shirt", "Sweatshirt", "Hoodie", "Jumper", "Blouse", "Polo", "Jacket", "Coat", "Cardigan", "Vest", "Gilet", "Blazer", "Shacket", "Waistcoat"]
+            if any(k.lower() in merchant_cat.lower() for k in top_keywords):
+                app_cat = "TOP"
+            else:
+                stats["skipped_no_cat"] += 1; continue
+
+        # 4. Цена и скидка
+        try:
+            price = float(base.get("search_price", 0))
+            rrp = float(base.get("rrp_price", 0))
+        except: continue
+
+        discount = 0
+        if rrp > price: discount = int(round((rrp - price) / rrp * 100))
+        if discount < MIN_DISCOUNT:
+            stats["skipped_discount"] += 1; continue
+
+        # 5. Обработка данных
+        sizes_set = {v.get("dimensions", "").strip() for v in available_variants if v.get("dimensions")}
+        size_type, size_system = get_size_info(sizes_set)
+        gender, source = detect_gender(base, sizes_set, app_cat)
+
+        color_group = normalize_color(base.get("colour", ""))
+
+        item = {
+            "id": f"dv8_{key}",
+            "name": base.get("product_name", "").rsplit(" - ", 1)[0].strip(),
+            "price": price,
+            "rrpPrice": rrp,
+            "discountPct": discount,
+            "category": app_cat,
+            "imageUrl": base.get("merchant_image_url"),
+            "productUrl": base.get("aw_deep_link"),
+            "store": base.get("merchant_name", SOURCE_NAME),
+            "brand": base.get("brand_name"),
+            "colour": base.get("colour", ""),
+            "colourGroup": color_group,
+            "currency": base.get("currency"),
+            "sizes": sort_sizes(sizes_set, size_type),
+            "sizeType": size_type,
+            "gender": gender,
+            "inStock": True,
+            "fitDx": 0.0, "fitDy": 0.0, "fitScale": 1.0,
+            "preCut": False
+        }
+        if size_system: item["sizeSystem"] = size_system
+
+        final_items.append(item)
+
+        # Обновление статистики
+        total_discount += discount
+        stats["cat_counts"][app_cat] += 1
+        stats["gender_counts"][gender] += 1
+        stats["gender_source"][source] += 1
+        stats["size_types"][size_type] = stats["size_types"].get(size_type, 0) + 1
+        stats["colors"][color_group] = stats["colors"].get(color_group, 0) + 1
+
     log("--- Статистика Awin (DV8) ---")
-    log(f"Всего строк в фиде: {rows_count}")
-    log(f"Уникальных товаров: {len(products_map)}")
-    log(f"Прошло фильтр: {len(final_items)}")
-    log(f"Скидка < {MIN_DISCOUNT}%: {skipped_discount}")
-    log(f"Нет в наличии: {skipped_stock}")
-    log(f"Пропущено из-за категории: {skipped_cat}")
-    if final_items:
-        log(f"Средняя скидка: {round(total_discount / len(final_items), 1)}%")
-    log(f"По категориям: {cat_stats}")
-    log(f"По полу: {gender_stats}")
+    log(f"Всего строк: {stats['rows']}, Уникальных товаров: {stats['unique']}, Надеваемых: {len(final_items)}")
+    log(f"Отсеяно: Мусор {stats['skipped_excluded_cat']}, Нет размера {stats['skipped_no_stock']}, Скидка {stats['skipped_discount']}, Категория {stats['skipped_no_cat']}")
+    log(f"По полу: {stats['gender_counts']}")
+    log(f"Источник пола: {stats['gender_source']}")
+    log(f"Типы размеров: {stats['size_types']}")
+    log(f"Топ цветов: {dict(sorted(stats['colors'].items(), key=lambda x: x[1], reverse=True)[:10])}")
+    if final_items: log(f"Средняя скидка: {round(total_discount / len(final_items), 1)}%")
 
     return final_items
 
 if __name__ == "__main__":
-    # Для отладки можно запустить модуль отдельно
     items = ingest()
     if items:
-        # Пишем локальную копию
         repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        out_path = os.path.join(repo_root, "dv8_products.json")
-        with open(out_path, "w", encoding="utf-8") as f:
+        with open(os.path.join(repo_root, "dv8_products.json"), "w", encoding="utf-8") as f:
             json.dump(items, f, ensure_ascii=False, indent=2)
-        log(f"Записано в {out_path}")
         print(json.dumps(items[:2], ensure_ascii=False, indent=2))
