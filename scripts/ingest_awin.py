@@ -9,6 +9,7 @@ import os
 import csv
 import io
 import gzip
+import html
 import json
 import re
 import urllib.request
@@ -117,20 +118,69 @@ def sort_sizes(sizes, size_type):
         return sorted(list(sizes), key=lambda x: float(re.search(r"(\d+\.?\d*)", x).group(1)) if re.search(r"\d", x) else 999)
     return sorted(list(sizes))
 
+def load_photo_gender():
+    """
+    Разметка по фотографии товара (scripts/classify_by_photo.py, локальный
+    qwen2.5vl). Точность измерена на 60 позициях с известным полом: 96.7%.
+
+    Нужна потому, что у ~450 товаров пола нет НИГДЕ: ни в названии, ни в
+    бренде, ни в сетке размеров, ни в одной из 50 колонок фида. Проверено
+    поимённо, включая все 5 строк на товар. Страница магазина закрыта
+    Azure WAF, туда не ходим.
+    """
+    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                        "photo_gender.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        raw = json.load(f)
+    return {k.replace("dv8_", ""): v for k, v in raw.items() if v in ("male", "female")}
+
+
+PHOTO_GENDER = load_photo_gender()
+
+
+def gender_from_description(row):
+    """
+    Пол из текста описания: «The Women's Nelson Sweatshirt is made from...».
+    Колонка description раньше не читалась вовсе, а там местами прямо сказано.
+    Мнемоники распаковываем: Women&apos;s -> Women's.
+    """
+    desc = html.unescape(row.get("description") or "")
+    f = re.search(r"\b(women|womens|woman|ladies|female)\b", desc, re.I)
+    m = re.search(r"\b(men|mens|man|male|gents)\b", desc, re.I)
+    if f and not m: return "female"
+    if m and not f: return "male"
+    return None
+
+
 def detect_gender(row, sizes, app_cat):
     cat_name = row.get("category_name", "")
     name = row.get("product_name", "").lower()
     brand = row.get("brand_name", "").lower()
     merchant_cat = row.get("merchant_category", "")
 
-    # a) Достоверно из category_name
+    # a) Детские вещи — ПЕРВЫМИ. Иначе "Jack & Jones Junior Shirt" с отделом
+    #    "Men's Clothing" уедет в мужские: отдел сработает раньше.
+    #    Голого "baby" тут нет: "baby tee" и "babydoll" — взрослые женские фасоны.
+    if re.search(r"\b(junior|kids|childrens|infant|toddler)\b", name, re.I):
+        return "kids", "name_kids"
+
+    # b) Достоверно из category_name
     if cat_name.startswith("Women"): return "female", "category_name"
     if cat_name.startswith("Men"): return "male", "category_name"
 
-    # b) Эвристики для нейтральных (General Clothing, Shoes...)
-    # 1. По имени
+    # c) Название товара. ВЫШЕ описания: описания магазин копирует между
+    #    вариантами — у «Reebok Womens Classic Nylon Shoes» в тексте стоит
+    #    «these men's Reebok shoes», и женские кроссовки уезжали в мужские.
     if re.search(r"\b(women|woman|womens|ladies|lady|girls|girl|female)\b", name): return "female", "name"
     if re.search(r"\b(men|man|mens|boys|boy|male|gents|gent)\b", name): return "male", "name"
+
+    # d) Текст описания — когда в названии пола нет
+    g = gender_from_description(row)
+    if g: return g, "description"
+
+    # e) Эвристики для нейтральных (General Clothing, Shoes...)
 
     # 2. Обувь по размеру
     if cat_name == "Shoes" or app_cat == "FOOTWEAR":
@@ -157,7 +207,14 @@ def detect_gender(row, sizes, app_cat):
     if stype == "uk_numeric": return "female", "size_system"
     if stype == "waist": return "male", "size_system"
 
-    return "unisex", "none"
+    # 6. Разметка по фотографии товара (см. load_photo_gender выше).
+    #    Последний слой: применяется, только когда все текстовые признаки молчат.
+    mid = re.search(r"/m-(\d+)\.aspx", row.get("merchant_deep_link") or "")
+    if mid and mid.group(1) in PHOTO_GENDER:
+        return PHOTO_GENDER[mid.group(1)], "photo"
+
+    # «не определили» — это НЕ «подходит всем». Приложение unknown прячет.
+    return "unknown", "none"
 
 def ingest():
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -207,8 +264,8 @@ def ingest():
         "rows": rows_count, "unique": len(raw_products),
         "skipped_excluded_cat": 0, "skipped_discount": 0, "skipped_no_stock": 0, "skipped_no_cat": 0,
         "cat_counts": {"TOP":0, "BOTTOM":0, "FULL_BODY":0, "FOOTWEAR":0},
-        "gender_counts": {"female":0, "male":0, "unisex":0},
-        "gender_source": {"category_name":0, "name":0, "shoe_size":0, "category":0, "brand":0, "size_system":0, "none":0},
+        "gender_counts": {"female":0, "male":0, "unisex":0, "kids":0, "unknown":0},
+        "gender_source": {"category_name":0, "name_kids":0, "description":0, "name":0, "shoe_size":0, "category":0, "brand":0, "size_system":0, "photo":0, "none":0},
         "size_types": {}, "colors": {}
     }
 
