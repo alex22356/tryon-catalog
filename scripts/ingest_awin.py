@@ -15,6 +15,8 @@ import re
 import urllib.request
 from datetime import date
 
+from subcategories import sub_category
+
 # Пороги и настройки
 MIN_DISCOUNT = 40
 MIN_SEARCH_PRICE = 0.01
@@ -324,6 +326,9 @@ def ingest():
             "rrpPrice": rrp,
             "discountPct": discount,
             "category": app_cat,
+            # Подкатегория для второго уровня иконок в приложении:
+            # 31 вид верха у магазина сводим к шести понятным группам.
+            "subCategory": sub_category(base.get("merchant_category")),
             "imageUrl": base.get("merchant_image_url"),
             "productUrl": base.get("aw_deep_link"),
             "store": base.get("merchant_name", SOURCE_NAME),
