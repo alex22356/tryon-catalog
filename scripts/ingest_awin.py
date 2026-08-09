@@ -237,17 +237,29 @@ def detect_gender(row, sizes, app_cat):
     if brand in FEMALE_BRANDS: return "female", "brand"
     if brand in MALE_BRANDS: return "male", "brand"
 
-    # d) Отдел магазина. Ниже названия и бренда — причина выше.
+    # d) Кто изображён на снимке товара (см. load_photo_gender выше).
+    #
+    #    Тоже выше отдела. Проверено прогоном scripts/audit_gender_photo.py по
+    #    248 товарам, чей пол держался только на отделе: снимок разошёлся с
+    #    отделом у 16, и на контактном листе в 14 случаях прав оказался
+    #    снимок — мужские чино-шорты и оксфорды отдел записал женскими, а
+    #    женскую цветочную блузку и широкие карго мужскими. Два спорных —
+    #    брюки на белом фоне без модели, там ошибиться может кто угодно.
+    mid = re.search(r"/m-(\d+)\.aspx", row.get("merchant_deep_link") or "")
+    if mid and mid.group(1) in PHOTO_GENDER:
+        return PHOTO_GENDER[mid.group(1)], "photo"
+
+    # e) Отдел магазина. Ниже названия, бренда и снимка — причины выше.
     if cat_name.startswith("Women"): return "female", "category_name"
     if cat_name.startswith("Men"): return "male", "category_name"
 
-    # d) Текст описания — когда в названии пола нет
+    # f) Текст описания — когда в названии пола нет
     g = gender_from_description(row)
     if g: return g, "description"
 
-    # e) Эвристики для нейтральных (General Clothing, Shoes...)
+    # g) Эвристики для нейтральных (General Clothing, Shoes...)
 
-    # 2. Обувь по размеру
+    # 1. Обувь по размеру
     if cat_name == "Shoes" or app_cat == "FOOTWEAR":
         nums = [float(m.group(1)) for s in sizes for m in [re.search(r"(\d+\.?\d*)", s)] if m]
         if nums:
@@ -259,24 +271,18 @@ def detect_gender(row, sizes, app_cat):
                 if mx <= 41: return "female", "shoe_size"
                 if mx >= 44: return "male", "shoe_size"
 
-    # 3. По категории
+    # 2. По категории
     if merchant_cat in FEMALE_CATEGORIES: return "female", "category"
     if merchant_cat in MALE_CATEGORIES: return "male", "category"
 
-    # 4. По бренду
-    if brand in FEMALE_BRANDS: return "female", "brand"
-    if brand in MALE_BRANDS: return "male", "brand"
-
-    # 5. По сетке размеров
+    # 3. По сетке размеров. Слабый признак: женские карго тоже размечают
+    #    поясом, поэтому и стоит последним.
     stype, _ = get_size_info(sizes)
     if stype == "uk_numeric": return "female", "size_system"
     if stype == "waist": return "male", "size_system"
 
-    # 6. Разметка по фотографии товара (см. load_photo_gender выше).
-    #    Последний слой: применяется, только когда все текстовые признаки молчат.
-    mid = re.search(r"/m-(\d+)\.aspx", row.get("merchant_deep_link") or "")
-    if mid and mid.group(1) in PHOTO_GENDER:
-        return PHOTO_GENDER[mid.group(1)], "photo"
+    # Проверка по бренду и по снимку раньше стояли здесь, в самом низу.
+    # Обе поднялись выше отдела магазина — см. пункты «в» и «г».
 
     # «не определили» — это НЕ «подходит всем». Приложение unknown прячет.
     return "unknown", "none"
