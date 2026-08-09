@@ -48,12 +48,19 @@ KEEP = ("Keep the person, the pose, the body proportions, the camera framing, "
         "Do not move, rescale or re-pose the body. Do not change the face or hair. "
         "Change nothing except the garment described below.")
 
+# Просим НЕ раздеть, а убрать деталь. Покрытие тела остаётся ровно то же —
+# меняется только крой лямок. Просьба сделать бельё меньше модель отклоняет
+# (finishReason IMAGE_OTHER), и это правильно; обходить её мы не будем.
 PROMPTS = {
-    "female": "Replace the nude bodysuit with plain seamless nude underwear: a "
-              "simple strapless bandeau top and matching briefs. No shoulder "
-              "straps at all. Bare shoulders, bare midriff, bare thighs. " + KEEP,
-    "male": "Replace the nude bodysuit with plain nude boxer briefs only. "
-            "No shoulder straps, bare chest, bare midriff, bare thighs. " + KEEP,
+    "female": "Edit only the garment she already wears: make the nude seamless "
+              "bodysuit STRAPLESS. Remove the two thin shoulder straps and let "
+              "the neckline sit straight across the chest, like a bandeau. "
+              "Coverage everywhere else stays exactly the same - same length on "
+              "the torso, same length on the thighs. " + KEEP,
+    "male": "Edit only the garment he already wears: make the nude seamless "
+            "bodysuit STRAPLESS. Remove the two thin shoulder straps and let the "
+            "neckline sit straight across the chest. Coverage everywhere else "
+            "stays exactly the same. " + KEEP,
 }
 
 
@@ -117,11 +124,18 @@ def generate(key, prompt, src_path, model):
         # Голый код ответа ничего не объясняет: у 429 внутри лежит, какая именно
         # квота кончилась и через сколько можно повторить.
         raise SystemExit(f"Gemini {e.code}: {e.read().decode('utf-8', 'replace')[:900]}")
-    for part in resp["candidates"][0]["content"]["parts"]:
+    cand = (resp.get("candidates") or [{}])[0]
+    for part in (cand.get("content") or {}).get("parts", []):
         blob = part.get("inline_data") or part.get("inlineData")
         if blob:
             return Image.open(io.BytesIO(base64.b64decode(blob["data"])))
-    raise RuntimeError("в ответе нет картинки: " + json.dumps(resp)[:400])
+    # Картинки нет — почти всегда это отказ фильтра, и причина лежит в
+    # finishReason/promptFeedback. Без них ошибка ничего не объясняет.
+    raise SystemExit(
+        "картинки в ответе нет\n"
+        f"  finishReason: {cand.get('finishReason')}\n"
+        f"  promptFeedback: {json.dumps(resp.get('promptFeedback'), ensure_ascii=False)}\n"
+        f"  текст ответа: {json.dumps((cand.get('content') or {}).get('parts'), ensure_ascii=False)[:400]}")
 
 
 def main():

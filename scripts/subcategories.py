@@ -117,9 +117,65 @@ SUBCATEGORY = {
 }
 
 
+# Запасной путь: определяем вид по названию, когда магазин его не сообщил.
+#
+# Нужен для ручных позиций и для магазинов без merchant_category — у них
+# subCategory оставалась пустой, и товар выпадал из второго уровня навигации:
+# он есть в каталоге, но ни под одной иконкой не показывается.
+#
+# Списки раздельные по крупной категории, чтобы слово из верха не приклеилось
+# к низу. Порядок внутри важен: узкое слово идёт раньше широкого, иначе
+# «T-Shirt» поймается на «shirt», а «Sweatshirt» — тем более.
+NAME_HINTS = {
+    "TOP": [
+        ("blazer", "blazer"), ("waistcoat", "blazer"),
+        ("hoody", "hoodie"), ("hoodie", "hoodie"), ("sweatshirt", "hoodie"),
+        ("cardigan", "jumper"), ("jumper", "jumper"), ("knitwear", "jumper"),
+        ("shacket", "jacket"), ("jacket", "jacket"), ("coat", "jacket"),
+        ("gilet", "jacket"),
+        ("polo", "polo"),
+        ("t-shirt", "tshirt"), ("tshirt", "tshirt"), ("t shirt", "tshirt"),
+        ("tee", "tshirt"),
+        ("shirt", "shirt"),
+        ("tank", "top"), ("cami", "top"), ("vest", "top"), ("bandeau", "top"),
+        ("bralet", "top"), ("corset", "top"), ("blouse", "top"), ("top", "top"),
+    ],
+    "BOTTOM": [
+        ("jean", "jeans"), ("denim", "jeans"),
+        ("jogger", "joggers"), ("sweatpant", "joggers"), ("tracksuit bottom", "joggers"),
+        ("skort", "skirt"), ("skirt", "skirt"),
+        ("short", "shorts"),
+        ("chino", "trousers"), ("trouser", "trousers"), ("pant", "trousers"),
+        ("legging", "trousers"),
+    ],
+    "FULL_BODY": [
+        ("jumpsuit", "jumpsuit"), ("playsuit", "jumpsuit"),
+        ("bodysuit", "bodysuit"),
+        ("pyjama", "pyjamas"), ("pajama", "pyjamas"),
+        ("maxi", "dress_long"), ("midi", "dress_midi"), ("mini", "dress_short"),
+        ("dress", "dress_short"),
+    ],
+    "FOOTWEAR": [
+        ("trainer", "trainers"), ("sneaker", "trainers"),
+        ("boot", "boots"), ("heel", "heels"),
+        ("flip flop", "sandals"), ("sandal", "sandals"), ("slide", "sandals"),
+        ("shoe", "shoes"), ("loafer", "shoes"), ("brogue", "shoes"),
+    ],
+}
+
+
 def sub_category(merchant_category):
     """Ключ подкатегории или None, если вид магазина незнакомый."""
     return SUBCATEGORY.get((merchant_category or "").strip())
+
+
+def from_name(name, category):
+    """Ключ подкатегории по названию товара. Только как запасной путь."""
+    low = (name or "").lower()
+    for word, key in NAME_HINTS.get(category or "", ()):
+        if word in low:
+            return key
+    return None
 
 
 if __name__ == "__main__":

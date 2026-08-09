@@ -213,6 +213,40 @@ def main():
             linked += 1
     log(f"вырезок подключено: {linked} из {len(cut_ids)} известных")
 
+    # Вид товара по названию — для тех, кому магазин его не сообщил.
+    # Без подкатегории вещь есть в каталоге, но не показывается ни под одной
+    # иконкой второго уровня, то есть найти её можно только пролистав всё.
+    import subcategories
+    named = 0
+    for item in merged.values():
+        if not item.get("subCategory"):
+            key = subcategories.from_name(item.get("name"), item.get("category"))
+            if key:
+                item["subCategory"] = key
+                named += 1
+    log(f"подкатегорий добрано по названию: {named}")
+
+    # Повторные объявления: магазин переставляет один и тот же фасон новым
+    # артикулом. Бренд и название совпадают, а вот цена, набор размеров и
+    # ссылка — разные, так что это не копии, а два живых объявления одного
+    # товара. В ленте они выглядят как две одинаковые карточки.
+    #
+    # Оставляем то, где БОЛЬШЕ размеров: у второго объявления обычно остался
+    # один остаток, и после фильтра по размеру такая карточка исчезнет у
+    # большинства. При равенстве берём дешевле, затем — с примеркой.
+    def rank(i):
+        return (-len(i.get("sizes") or []), i["price"], 0 if i.get("overlayUrl") else 1)
+
+    best = {}
+    for item in merged.values():
+        key = ((item.get("brand") or "").lower(), item["name"].lower())
+        if key not in best or rank(item) < rank(best[key]):
+            best[key] = item
+    dropped = len(merged) - len(best)
+    if dropped:
+        log(f"повторных объявлений свёрнуто: {dropped}")
+    merged = {i["id"]: i for i in best.values()}
+
     items = sorted(merged.values(), key=lambda i: (i["price"], i["name"]))
     if not items:
         log("ОШИБКА: каталог пуст — не публикую, чтобы не сломать приложение")
