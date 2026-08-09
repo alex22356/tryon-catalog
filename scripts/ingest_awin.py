@@ -215,15 +215,31 @@ def detect_gender(row, sizes, app_cat):
     if re.search(r"\b(junior|kids|childrens|infant|toddler)\b", name, re.I):
         return "kids", "name_kids"
 
-    # b) Достоверно из category_name
-    if cat_name.startswith("Women"): return "female", "category_name"
-    if cat_name.startswith("Men"): return "male", "category_name"
-
-    # c) Название товара. ВЫШЕ описания: описания магазин копирует между
-    #    вариантами — у «Reebok Womens Classic Nylon Shoes» в тексте стоит
-    #    «these men's Reebok shoes», и женские кроссовки уезжали в мужские.
+    # b) Пол в САМОМ названии товара — сильнее любого поля магазина.
+    #    Выше описания: описания магазин копирует между вариантами — у
+    #    «Reebok Womens Classic Nylon Shoes» в тексте стоит «these men's
+    #    Reebok shoes», и женские кроссовки уезжали в мужские.
     if re.search(r"\b(women|woman|womens|ladies|lady|girls|girl|female)\b", name): return "female", "name"
     if re.search(r"\b(men|man|mens|boys|boy|male|gents|gent)\b", name): return "male", "name"
+
+    # c) Однозначно женский или мужской бренд.
+    #
+    #    Стоит ВЫШЕ отдела магазина намеренно. Отдел врёт, и это проверено:
+    #    «Only Safai Cargo Trousers» с размерами 6R/10R/14S лежит в Men's
+    #    Clothing, «Noisy May Moni Jeans» с размерами 25R/27S — тоже, а
+    #    мужская рубашка Jack & Jones — в Women's. Таких нашлось 45, и
+    #    каждый показывался не тому человеку.
+    #
+    #    Списки короткие и однозначные: Only, Vero Moda, JDY, Noisy May —
+    #    женские линейки Bestseller, Only & Sons и Selected Homme — мужские
+    #    того же холдинга. Бренд здесь знание о мире, а отдел — поле, которое
+    #    магазин заполняет как придётся.
+    if brand in FEMALE_BRANDS: return "female", "brand"
+    if brand in MALE_BRANDS: return "male", "brand"
+
+    # d) Отдел магазина. Ниже названия и бренда — причина выше.
+    if cat_name.startswith("Women"): return "female", "category_name"
+    if cat_name.startswith("Men"): return "male", "category_name"
 
     # d) Текст описания — когда в названии пола нет
     g = gender_from_description(row)
