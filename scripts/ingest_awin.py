@@ -162,6 +162,28 @@ TRYON_OVERLAYS = load_tryon_overlays()
 OVERLAY_BASE = "https://alex22356.github.io/tryon-catalog/products"
 
 
+def load_tryon_cutouts():
+    """
+    Товары с ВЫРЕЗАННОЙ вещью на прозрачном фоне (scripts/build_masks.py).
+
+    Отличие от обычной примерки принципиальное: та — кадр всего тела, и два
+    таких кадра нельзя наложить, приходится прятать лишнее обрезкой по талии.
+    Вырезка накладывается свободно, длинные вещи не режутся, шва нет.
+
+    Отдельным файлом по той же причине, что и всё остальное: этот модуль
+    пересоздаёт dv8_products.json из ленты и стирает всё дописанное.
+    """
+    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                        "tryon_cutouts.json")
+    if not os.path.exists(path):
+        return set()
+    with open(path, encoding="utf-8") as f:
+        return set(json.load(f))
+
+
+TRYON_CUTOUTS = load_tryon_cutouts()
+
+
 def gender_from_description(row):
     """
     Пол из текста описания: «The Women's Nelson Sweatshirt is made from...».
@@ -364,8 +386,13 @@ def ingest():
             "preCut": False
         }
 
-        # Готовая примерка, если она есть: оверлей кладётся на манекен 1:1
-        if item["id"] in TRYON_OVERLAYS:
+        # Готовая примерка, если она есть: оверлей кладётся на манекен 1:1.
+        # Вырезка предпочтительнее целого кадра — ей не нужна обрезка.
+        if item["id"] in TRYON_CUTOUTS:
+            item["overlayUrl"] = f"{OVERLAY_BASE}/cut_{item['id']}.webp"
+            item["preCut"] = True
+            item["overlayCutout"] = True
+        elif item["id"] in TRYON_OVERLAYS:
             item["overlayUrl"] = f"{OVERLAY_BASE}/overlay_{item['id']}.webp"
             item["preCut"] = True
         if size_system: item["sizeSystem"] = size_system
