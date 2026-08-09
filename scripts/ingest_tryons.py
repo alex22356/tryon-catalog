@@ -40,7 +40,10 @@ def load_base_url():
             cfg = json.load(f)
         url = cfg.get("productsBaseUrl") or cfg.get("baseUrl")
         if url:
-            return url.rstrip("/")
+            url = url.rstrip("/")
+            # baseUrl в настройках — корень сайта, а картинки рабочий процесс
+            # копирует в public/products. Без этого хвоста ссылки ведут в никуда.
+            return url if url.endswith("/products") else url + "/products"
     return "https://alex22356.github.io/tryon-catalog/products"
 
 

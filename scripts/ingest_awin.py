@@ -142,6 +142,26 @@ def load_photo_gender():
 PHOTO_GENDER = load_photo_gender()
 
 
+def load_tryon_overlays():
+    """
+    Список товаров, для которых уже посчитана примерка (products/*.webp).
+
+    Держим отдельным файлом по той же причине, что и разметку пола: этот
+    модуль ПЕРЕСОЗДАЁТ dv8_products.json из ленты при каждой сборке, и всё
+    дописанное туда задним числом стирается. Один раз уже потеряли 2213 штук.
+    """
+    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                        "tryon_overlays.json")
+    if not os.path.exists(path):
+        return set()
+    with open(path, encoding="utf-8") as f:
+        return set(json.load(f))
+
+
+TRYON_OVERLAYS = load_tryon_overlays()
+OVERLAY_BASE = "https://alex22356.github.io/tryon-catalog/products"
+
+
 def gender_from_description(row):
     """
     Пол из текста описания: «The Women's Nelson Sweatshirt is made from...».
@@ -343,6 +363,11 @@ def ingest():
             "fitDx": 0.0, "fitDy": 0.0, "fitScale": 1.0,
             "preCut": False
         }
+
+        # Готовая примерка, если она есть: оверлей кладётся на манекен 1:1
+        if item["id"] in TRYON_OVERLAYS:
+            item["overlayUrl"] = f"{OVERLAY_BASE}/overlay_{item['id']}.webp"
+            item["preCut"] = True
         if size_system: item["sizeSystem"] = size_system
 
         final_items.append(item)
