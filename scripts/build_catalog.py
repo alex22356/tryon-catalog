@@ -193,6 +193,26 @@ def main():
     for item in dv8_items + feed_items:
         merged[item["id"]] = item
 
+    # Вырезка перекрывает полнокадровую примерку — у товара ЛЮБОГО источника.
+    #
+    # Раньше это делал только ingest_awin, и семь ручных позиций SHEIN остались
+    # на старом пути: вещь резалась по талии, а сквозь неё светилось бельё
+    # базы — на экране это выглядело как дыра в товаре. Файлы вырезок для них
+    # были готовы, их просто никто не подключал.
+    #
+    # Наличие файла проверяем: без него ссылка вела бы в 404 и вещь пропала бы
+    # с манекена совсем.
+    base_url = read_json(os.path.join(ROOT, "publish_config.json"), {}).get("baseUrl", "").rstrip("/")
+    cut_ids = set(read_json(os.path.join(ROOT, "tryon_cutouts.json"), []))
+    linked = 0
+    for pid, item in merged.items():
+        if pid in cut_ids and os.path.exists(os.path.join(ROOT, "products", f"cut_{pid}.webp")):
+            item["overlayUrl"] = f"{base_url}/products/cut_{pid}.webp"
+            item["preCut"] = True
+            item["overlayCutout"] = True
+            linked += 1
+    log(f"вырезок подключено: {linked} из {len(cut_ids)} известных")
+
     items = sorted(merged.values(), key=lambda i: (i["price"], i["name"]))
     if not items:
         log("ОШИБКА: каталог пуст — не публикую, чтобы не сломать приложение")
