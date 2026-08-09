@@ -59,7 +59,12 @@ FEMALE_CATEGORIES = {
     "Short Skirts", "Mini Skirt", "Short Dresses", "Long Dresses", "Midi Dresses",
     "Playsuits", "Jumpsuits", "Body Suits", "Cami Tops", "Strapless Tops", "Sport Leggings"
 }
-MALE_CATEGORIES = {"Waistcoat", "Ties", "Dress Shirts", "Boxers", "Briefs"}
+# «Waistcoat» отсюда убран намеренно. Магазин кладёт в эту категорию и женские
+# жилеты, которых сейчас много: из 26 позиций почти все оказались женскими —
+# Vero Moda, Only, JDY, Noisy May, Saint Genies. А правило по категории стоит
+# ВЫШЕ правила по бренду, поэтому женский бренд не успевал сработать, и жилеты
+# уезжали на мужской манекен. Проверено по фотографиям товаров.
+MALE_CATEGORIES = {"Ties", "Dress Shirts", "Boxers", "Briefs"}
 
 FEMALE_BRANDS = {
     "only", "veromoda", "pieces", "tally weijl", "noisy may", "kaiia", "jdy",
