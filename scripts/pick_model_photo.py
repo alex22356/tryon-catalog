@@ -108,6 +108,26 @@ def main():
     ap.add_argument("--apply", action="store_true", help="записать в photo_gender.json")
     a = ap.parse_args()
 
+    # --apply берёт ГОТОВЫЙ отчёт, а не считает заново: прогон идёт часами,
+    # и повторять его ради записи бессмысленно. Раньше здесь была ошибка —
+    # с --apply скрипт пересчитывал всё сначала, а с --limit применял
+    # результат одной вещи и рапортовал «уточнено 0».
+    if a.apply:
+        if not os.path.exists(RESULT):
+            sys.exit("отчёта нет — сначала запусти без --apply")
+        res = json.load(open(RESULT, encoding="utf-8"))
+        pg_path = os.path.join(ROOT, "photo_gender.json")
+        pg = json.load(open(pg_path, encoding="utf-8"))
+        changed = 0
+        for pid, r in res.items():
+            if r.get("photo") and r.get("sure") and pg.get(pid) != r["photo"]:
+                pg[pid] = r["photo"]
+                changed += 1
+        json.dump(pg, open(pg_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        print(f"из отчёта: {len(res)} записей")
+        print(f"уточнено по кадру с живой моделью: {changed}, всего в разметке {len(pg)}")
+        return
+
     work = weak_items()
     if a.limit:
         work = work[:a.limit]
