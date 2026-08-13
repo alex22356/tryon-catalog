@@ -14,6 +14,7 @@
 Зависимости: только стандартная библиотека (никаких pip install).
 """
 
+import collections
 import csv
 import io
 import json
@@ -156,7 +157,6 @@ def load_feeds(feeds):
     return items
 
 
-_SET_MARK = re.compile(r"co-?ord|two piece|2 piece|tracksuit|\bset\b", re.I)
 # Слова, которые говорят о ВИДЕ вещи, а не о модели. Верх и низ одного
 # комплекта видами как раз различаются, поэтому для сравнения они бесполезны.
 _VIEW_WORDS = {
@@ -165,7 +165,22 @@ _VIEW_WORDS = {
     "shorts", "short", "trouser", "trousers", "pant", "pants", "jeans",
     "skort", "bermuda", "wide", "leg", "loose", "crop", "mini", "midi", "maxi",
     "co", "ord", "coord", "womens", "women", "mens", "men", "the", "and", "with",
+    "hoodie", "hoody", "jogger", "joggers", "sweatshirt", "jumper", "cardigan",
+    "bottom", "bottoms", "zip", "tracksuit", "set", "sets", "piece", "dress",
 }
+
+# Насколько редким должно быть общее слово, чтобы считаться названием модели.
+#
+# Это ключ ко всему правилу. Название модели — «diamanté», «naja», «tila» —
+# встречается у двух-трёх вещей. Название ЛИНЕЙКИ — «junior» у Jack & Jones,
+# «life» у Only — встречается у сотен, и по нему склеивается что угодно с чем
+# угодно: без этого порога получалось 180 пар, из них больше половины мусор.
+#
+# Раньше вместо редкости требовалось слово «co-ord» в названии. Оно отсекало
+# мусор, но и пропускало настоящие комплекты: спорткостюмы Juicy Couture
+# зовутся просто «Hoodie» и «Jogger», метки в них нет, и все три пары
+# терялись.
+_RARE_ENOUGH = 6
 
 
 def _style_words(item):
@@ -181,34 +196,39 @@ def link_sets(merged):
     """Связывает половинки комплекта: верх и низ одной модели.
 
     Зачем: магазин продаёт комплект двумя отдельными товарами с разными
-    ценами. Человек видит пиджак, покупает — и получает только пиджак, хотя
-    на витрине была пара. Ссылка на вторую половину закрывает это.
+    ценами. Человек видит на витрине пиджак с шортами, берёт пиджак — и
+    получает только пиджак. Ссылка на вторую половину закрывает это.
 
-    Правило намеренно строгое. Совпадения бренда и цвета мало: у Saint Genies
-    в одном цвете лежат жилет в полоску и юбка devore, и они друг другу не
-    пара. Поэтому требуем ещё общее слово МОДЕЛИ — «nancy», «devore»,
-    «pinstripe». Послабление одно: если в группе ровно один верх и ровно один
-    низ, выбирать всё равно не из чего.
+    Пара считается настоящей, если совпали три вещи: бренд, точный цвет и
+    редкое слово из названия. Редкость и делает всю работу — см. _RARE_ENOUGH.
+
+    Платья и комбинезоны в пары не идут: цельная вещь и так законченный образ,
+    ей вторая половина не нужна. Без этого «Jdy Say Shirt» склеивалась с «Jdy
+    Say Midi Shirt Dress», то есть рубашка предлагалась к платью.
     """
+    freq = collections.Counter()
+    for item in merged.values():
+        freq.update(_style_words(item))
+
     groups = {}
     for item in merged.values():
-        if not _SET_MARK.search(item["name"]):
+        if item["category"] not in ("TOP", "BOTTOM"):
             continue
         name = item["name"]
-        colour = (name.rsplit(" - ", 1)[1].strip().lower() if " - " in name
-                  else (item.get("colourGroup") or "").lower())
-        if not colour:
-            continue
-        groups.setdefault(((item.get("brand") or "").lower(), colour), []).append(item)
+        if " - " not in name or not item.get("brand"):
+            continue                      # без цвета в названии пары не собрать
+        colour = name.rsplit(" - ", 1)[1].strip().lower()
+        groups.setdefault((item["brand"].lower(), colour), []).append(item)
 
     linked = 0
     for group in groups.values():
         tops = [i for i in group if i["category"] == "TOP"]
-        bottoms = [i for i in group if i["category"] in ("BOTTOM", "FULL_BODY")]
-        alone = len(tops) == 1 and len(bottoms) == 1
+        bottoms = [i for i in group if i["category"] == "BOTTOM"]
         for t in tops:
             for b in bottoms:
-                if alone or (_style_words(t) & _style_words(b)):
+                shared = {w for w in (_style_words(t) & _style_words(b))
+                          if freq[w] <= _RARE_ENOUGH}
+                if shared:
                     t.setdefault("setWith", []).append(b["id"])
                     b.setdefault("setWith", []).append(t["id"])
                     linked += 1
