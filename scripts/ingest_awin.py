@@ -31,7 +31,7 @@ EXCLUDED_CATEGORY_NAMES = {
 # Маппинг категорий (ТОЧНОЕ совпадение merchant_category)
 CAT_MAP = {
     "FULL_BODY": [
-        "Pyjamas", "Body Suits", "Jumpsuits", "Playsuits",
+        "Pyjamas", "Jumpsuits", "Playsuits",
         "Short Dresses", "Long Dresses", "Midi Dresses"
     ],
     "BOTTOM": [
@@ -49,7 +49,14 @@ CAT_MAP = {
     "TOP": [
         "T-shirt", "Top", "Shirt", "Sweatshirt", "Hoodie", "Jumper", "Blouse",
         "Polo", "Jacket", "Coat", "Cardigan", "Vest", "Gilet", "Blazer",
-        "Shacket", "Waistcoat", "Waistcoats"
+        "Shacket", "Waistcoat", "Waistcoats",
+        # Боди переехало сюда из «цельного». Формально это одна деталь, но
+        # носят его как верх: все 25 позиций в каталоге сняты с джинсами,
+        # юбками и шортами. В разделе платьев оно выглядело футболкой, а как
+        # «цельная вещь» ЗАМЕНЯЛО на манекене и верх, и низ — надеть боди с
+        # джинсами было невозможно, то есть единственным способом, каким его
+        # вообще носят.
+        "Body Suits"
     ]
 }
 

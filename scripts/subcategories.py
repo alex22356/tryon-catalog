@@ -138,7 +138,9 @@ NAME_HINTS = {
         ("tee", "tshirt"),
         ("shirt", "shirt"),
         ("tank", "top"), ("cami", "top"), ("vest", "top"), ("bandeau", "top"),
-        ("bralet", "top"), ("corset", "top"), ("blouse", "top"), ("top", "top"),
+        ("bralet", "top"), ("corset", "top"), ("blouse", "top"),
+        ("bodysuit", "bodysuit"),   # носят как верх, см. ingest_awin
+        ("top", "top"),
     ],
     "BOTTOM": [
         ("jean", "jeans"), ("denim", "jeans"),
@@ -150,7 +152,6 @@ NAME_HINTS = {
     ],
     "FULL_BODY": [
         ("jumpsuit", "jumpsuit"), ("playsuit", "jumpsuit"),
-        ("bodysuit", "bodysuit"),
         ("pyjama", "pyjamas"), ("pajama", "pyjamas"),
         ("maxi", "dress_long"), ("midi", "dress_midi"), ("mini", "dress_short"),
         ("dress", "dress_short"),
