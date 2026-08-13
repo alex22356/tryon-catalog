@@ -18,6 +18,7 @@ import csv
 import io
 import json
 import os
+import re
 import shutil
 import sys
 import urllib.request
@@ -155,6 +156,65 @@ def load_feeds(feeds):
     return items
 
 
+_SET_MARK = re.compile(r"co-?ord|two piece|2 piece|tracksuit|\bset\b", re.I)
+# Слова, которые говорят о ВИДЕ вещи, а не о модели. Верх и низ одного
+# комплекта видами как раз различаются, поэтому для сравнения они бесполезны.
+_VIEW_WORDS = {
+    "top", "tops", "shirt", "blouse", "tee", "tshirt", "bralet", "bandeau",
+    "corset", "cami", "vest", "waistcoat", "blazer", "jacket", "skirt",
+    "shorts", "short", "trouser", "trousers", "pant", "pants", "jeans",
+    "skort", "bermuda", "wide", "leg", "loose", "crop", "mini", "midi", "maxi",
+    "co", "ord", "coord", "womens", "women", "mens", "men", "the", "and", "with",
+}
+
+
+def _style_words(item):
+    """Слова названия без цвета, без бренда и без вида вещи — это модель."""
+    head = item["name"].rsplit(" - ", 1)[0].lower()
+    head = re.sub(r"[^a-z0-9 ]", " ", head)
+    brand = set((item.get("brand") or "").lower().split())
+    return {w for w in head.split()
+            if len(w) > 2 and w not in _VIEW_WORDS and w not in brand}
+
+
+def link_sets(merged):
+    """Связывает половинки комплекта: верх и низ одной модели.
+
+    Зачем: магазин продаёт комплект двумя отдельными товарами с разными
+    ценами. Человек видит пиджак, покупает — и получает только пиджак, хотя
+    на витрине была пара. Ссылка на вторую половину закрывает это.
+
+    Правило намеренно строгое. Совпадения бренда и цвета мало: у Saint Genies
+    в одном цвете лежат жилет в полоску и юбка devore, и они друг другу не
+    пара. Поэтому требуем ещё общее слово МОДЕЛИ — «nancy», «devore»,
+    «pinstripe». Послабление одно: если в группе ровно один верх и ровно один
+    низ, выбирать всё равно не из чего.
+    """
+    groups = {}
+    for item in merged.values():
+        if not _SET_MARK.search(item["name"]):
+            continue
+        name = item["name"]
+        colour = (name.rsplit(" - ", 1)[1].strip().lower() if " - " in name
+                  else (item.get("colourGroup") or "").lower())
+        if not colour:
+            continue
+        groups.setdefault(((item.get("brand") or "").lower(), colour), []).append(item)
+
+    linked = 0
+    for group in groups.values():
+        tops = [i for i in group if i["category"] == "TOP"]
+        bottoms = [i for i in group if i["category"] in ("BOTTOM", "FULL_BODY")]
+        alone = len(tops) == 1 and len(bottoms) == 1
+        for t in tops:
+            for b in bottoms:
+                if alone or (_style_words(t) & _style_words(b)):
+                    t.setdefault("setWith", []).append(b["id"])
+                    b.setdefault("setWith", []).append(t["id"])
+                    linked += 1
+    log(f"половинок комплектов связано: {linked} пар")
+
+
 def main():
     curated_raw = read_json(os.path.join(ROOT, "curated.json"), {"items": []})
     feeds_raw = read_json(os.path.join(ROOT, "feeds.json"), {"feeds": []})
@@ -246,6 +306,8 @@ def main():
     if dropped:
         log(f"повторных объявлений свёрнуто: {dropped}")
     merged = {i["id"]: i for i in best.values()}
+
+    link_sets(merged)
 
     items = sorted(merged.values(), key=lambda i: (i["price"], i["name"]))
     if not items:
