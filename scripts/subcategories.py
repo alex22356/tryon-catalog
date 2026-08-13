@@ -171,8 +171,14 @@ def sub_category(merchant_category):
 
 
 def from_name(name, category):
-    """Ключ подкатегории по названию товара. Только как запасной путь."""
-    low = (name or "").lower()
+    """Ключ подкатегории по названию товара. Только как запасной путь.
+
+    Цвет из названия выбрасываем. DV8 пишет его в конце через дефис, и он
+    сплошь и рядом сам состоит из слов одежды: «Pant - Navy Blazer»,
+    «Cargos - Dress Blues», «Shirt - Ballet Slipper Pink». По полному
+    названию брюки уезжали бы в пиджаки, а рубашка — в тапки.
+    """
+    low = (name or "").rsplit(" - ", 1)[0].lower()
     for word, key in NAME_HINTS.get(category or "", ()):
         if word in low:
             return key
